@@ -215,9 +215,9 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nginx
-sudo DEBIAN_FRONTEND=noninteractive apt-get -t install nginx-extras
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nginx-extras
 sudo systemctl start nginx.service
-sudo rpl "http {" "http { \\n   limit_req_zone \$binary_remote_addr zone=one:10m rate=1r/s; fastcgi_read_timeout 300; \\n   more_set_headers 'Server: Managed by www.cipi.sh';" /etc/nginx/nginx.conf
+sudo rpl "http {" "http { \\n   limit_req_zone \$binary_remote_addr zone=one:10m rate=1r/s; fastcgi_read_timeout 300; \\n   more_set_headers 'Server: Managed by cipi.sh';" /etc/nginx/nginx.conf
 sudo systemctl enable nginx.service
 sudo systemctl restart nginx.service
 
@@ -571,6 +571,7 @@ sudo chmod -R 775 /var/www/html/storage
 sudo chmod -R o+w /var/www/html/bootstrap/cache
 sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:cipi /var/www/html
+sudo chmod -R 775 /var/www/html
 su cipi
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
@@ -578,13 +579,13 @@ cd /var/www/html && php artisan cache:clear
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
-sudo touch $CIPIBULD
-sudo cat > $CIPIBULD <<EOF
+touch $CIPIBULD
+cat > $CIPIBULD <<EOF
 $BUILD
 EOF
 CIPIPING=/var/www/html/public/ping_$SERVERID.php
-sudo touch $CIPIPING
-sudo cat > $CIPIPING <<EOF
+touch $CIPIPING
+cat > $CIPIPING <<EOF
 Up
 EOF
 cd /var/www/html && php artisan migrate --seed --force
