@@ -214,7 +214,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nginx
 sudo DEBIAN_FRONTEND=noninteractive apt-get -t install nginx-extras
 sudo systemctl start nginx.service
@@ -231,7 +230,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fail2ban
 JAIL=/etc/fail2ban/jail.local
 sudo unlink JAIL
@@ -263,7 +261,6 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ondrej/php
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fpm
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-common
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-curl
@@ -331,7 +328,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
 
 
@@ -344,7 +340,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install supervisor
 sudo service supervisor restart
 
@@ -406,7 +401,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 SECURE_MYSQL=$(expect -c "
 set timeout 10
@@ -445,7 +439,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install redis-server
 sudo rpl -i -w "supervised no" "supervised systemd" /etc/redis/redis.conf
 sudo systemctl restart redis.service
@@ -460,7 +453,6 @@ echo "${reset}"
 sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install certbot
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-certbot-nginx
 
@@ -485,6 +477,62 @@ EOF
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nodejs
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install npm
+
+
+
+# FINE TUNING
+clear
+echo "${bggreen}${black}${bold}"
+echo "Fine Tuning..."
+echo "${reset}"
+sleep 1s
+
+sudo chown www-data:cipi -R /var/www/html
+sudo chmod -R 750 /var/www/html
+sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
+sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
+sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
+sudo systemctl daemon-reload
+
+TASK=/etc/cron.d/cipi.crontab
+touch $TASK
+cat > "$TASK" <<EOF
+0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
+0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
+20 4 * * 7 apt-get -y update
+40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
+20 5 * * 7 apt-get clean && apt-get autoclean
+50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
+* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
+5 2 * * * cd /var/www/html/utility/cipi-update && sh run.sh >> /dev/null 2>&1
+EOF
+crontab $TASK
+sudo systemctl restart nginx.service
+sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
+sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
+sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
+#sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
+sudo service sshd restart
+TASK=/etc/supervisor/conf.d/cipi.conf
+touch $TASK
+cat > "$TASK" <<EOF
+[program:cipi-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=cipi
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/www/worker.log
+stopwaitsecs=3600
+EOF
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start all
+sudo service supervisor restart
 
 
 
@@ -519,16 +567,16 @@ sudo rpl -i -w "CIPIIP" $IP /var/www/html/database/seeders/DatabaseSeeder.php
 sudo rpl -i -w "CIPIPASS" $PASS /var/www/html/database/seeders/DatabaseSeeder.php
 sudo rpl -i -w "CIPIDB" $DBPASS /var/www/html/database/seeders/DatabaseSeeder.php
 sudo chmod -R o+w /var/www/html/storage
-sudo chmod -R 777 /var/www/html/storage
+sudo chmod -R 775 /var/www/html/storage
 sudo chmod -R o+w /var/www/html/bootstrap/cache
-sudo chmod -R 777 /var/www/html/bootstrap/cache
-cd /var/www/html && composer update --no-interaction
-cd /var/www/html && composer require guzzlehttp/psr7:1.5.2
+sudo chmod -R 775 /var/www/html/bootstrap/cache
+sudo chown -R www-data:cipi /var/www/html
+su cipi
+cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
 cd /var/www/html && php artisan cache:clear
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
-cd /var/www/html && php artisan cipi:activesetupcount
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
 sudo touch $CIPIBULD
 sudo cat > $CIPIBULD <<EOF
@@ -539,74 +587,10 @@ sudo touch $CIPIPING
 sudo cat > $CIPIPING <<EOF
 Up
 EOF
-PUBKEYGH=/var/www/html/public/ghkey_$SERVERID.php
-sudo touch $PUBKEYGH
-sudo cat > $PUBKEYGH <<EOF
-<?php
-echo exec("cat /etc/cipi/github.pub");
-EOF
 cd /var/www/html && php artisan migrate --seed --force
 cd /var/www/html && php artisan config:cache
-sudo chmod -R o+w /var/www/html/storage
-sudo chmod -R 775 /var/www/html/storage
-sudo chmod -R o+w /var/www/html/bootstrap/cache
-sudo chmod -R 775 /var/www/html/bootstrap/cache
-sudo chown -R www-data:cipi /var/www/html
 
 
-
-# LAST STEPS
-clear
-echo "${bggreen}${black}${bold}"
-echo "Last steps..."
-echo "${reset}"
-sleep 1s
-
-sudo chown www-data:cipi -R /var/www/html
-sudo chmod -R 750 /var/www/html
-sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
-sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
-sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
-sudo systemctl daemon-reload
-
-TASK=/etc/cron.d/cipi.crontab
-touch $TASK
-cat > "$TASK" <<EOF
-0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
-0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
-20 4 * * 7 apt-get -y update
-sudo DEBIAN_FRONTEND=noninteractive * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
-20 5 * * 7 apt-get clean && apt-get autoclean
-50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
-* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
-5 2 * * * cd /var/www/html/utility/cipi-update && sh run.sh >> /dev/null 2>&1
-EOF
-crontab $TASK
-sudo systemctl restart nginx.service
-sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
-sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
-sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
-sudo service sshd restart
-TASK=/etc/supervisor/conf.d/cipi.conf
-touch $TASK
-cat > "$TASK" <<EOF
-[program:cipi-worker]
-process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/html/artisan queue:work --sleep=3 --tries=3 --max-time=3600
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-user=cipi
-numprocs=8
-redirect_stderr=true
-stdout_logfile=/var/www/worker.log
-stopwaitsecs=3600
-EOF
-sudo supervisorctl reread
-sudo supervisorctl update
-sudo supervisorctl start all
-sudo service supervisor restart
 
 # COMPLETE
 clear
