@@ -560,7 +560,9 @@ sudo chmod -R o+w /var/www/html/bootstrap/cache
 sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
-su cipi
+CIPISETUP=/var/www/temp.sh
+sudo touch $CIPISETUP
+sudo cat > $CIPISETUP <<EOF
 cd /var/www/html && unlink .env
 cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
@@ -579,16 +581,22 @@ cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
 cd /var/www/html && php artisan migrate --seed --force
+EOF
+su -c $CIPISETUP cipi
+sudo unlink $CIPISETUP
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
-touch $CIPIBULD
-cat > $CIPIBULD <<EOF
+sudo touch $CIPIBULD
+sudo cat > $CIPIBULD <<EOF
 $BUILD
 EOF
 CIPIPING=/var/www/html/public/ping_$SERVERID.php
-touch $CIPIPING
-cat > $CIPIPING <<EOF
+sudo touch $CIPIPING
+sudo cat > $CIPIPING <<EOF
 Up
 EOF
+sudo chown -R www-data:cipi /var/www/html
+sudo chmod -R 775 /var/www/html
+
 
 
 # COMPLETE
