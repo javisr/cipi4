@@ -114,8 +114,8 @@ echo "Base setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get update -y
-sudo apt-get -y install software-properties-common curl wget nano vim rpl sed zip unzip expect dirmngr apt-transport-https lsb-release ca-certificates dnsutils dos2unix htop
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common curl wget nano vim rpl sed zip unzip expect dirmngr apt-transport-https lsb-release ca-certificates dnsutils dos2unix htop
 
 
 # GET IP
@@ -213,12 +213,14 @@ echo "nginx setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get -y install nginx
-sudo apt install -y nginx-extras
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nginx
+sudo DEBIAN_FRONTEND=noninteractive apt-get -t install nginx-extras
 sudo systemctl start nginx.service
-sudo rpl "http {" "http { \\n   limit_req_zone \$binary_remote_addr zone=one:10m rate=1r/s; fastcgi_read_timeout 300; \\n   more_set_headers 'Server: CIPI';" /etc/nginx/nginx.conf
+sudo rpl "http {" "http { \\n   limit_req_zone \$binary_remote_addr zone=one:10m rate=1r/s; fastcgi_read_timeout 300; \\n   more_set_headers 'Server: Managed by www.cipi.sh';" /etc/nginx/nginx.conf
 sudo systemctl enable nginx.service
-
+sudo systemctl restart nginx.service
 
 
 # FIREWALL
@@ -228,7 +230,9 @@ echo "fail2ban setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get -y install fail2ban
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fail2ban
 JAIL=/etc/fail2ban/jail.local
 sudo unlink JAIL
 sudo touch $JAIL
@@ -257,30 +261,30 @@ echo "PHP setup..."
 echo "${reset}"
 sleep 1s
 
-sudo add-apt-repository -y ppa:ondrej/php
-sudo apt-get update
-
-sudo apt-get -y install php8.1-fpm
-sudo apt-get -y install php8.1-common
-sudo apt-get -y install php8.1-curl
-sudo apt-get -y install php8.1-openssl
-sudo apt-get -y install php8.1-bcmath
-sudo apt-get -y install php8.1-mbstring
-sudo apt-get -y install php8.1-tokenizer
-sudo apt-get -y install php8.1-mysql
-sudo apt-get -y install php8.1-sqlite3
-sudo apt-get -y install php8.1-pgsql
-sudo apt-get -y install php8.1-redis
-sudo apt-get -y install php8.1-memcached
-sudo apt-get -y install php8.1-json
-sudo apt-get -y install php8.1-zip
-sudo apt-get -y install php8.1-xml
-sudo apt-get -y install php8.1-soap
-sudo apt-get -y install php8.1-gd
-sudo apt-get -y install php8.1-imagick
-sudo apt-get -y install php8.1-fileinfo
-sudo apt-get -y install php8.1-imap
-sudo apt-get -y install php8.1-cli
+sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ondrej/php
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fpm
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-common
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-curl
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-bcmath
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-mbstring
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-tokenizer
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-mysql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-sqlite3
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-pgsql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-redis
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-memcached
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-json
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-zip
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-xml
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-soap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-gd
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-imagick
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fileinfo
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-imap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-cli
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-openssl
 PHPINI=/etc/php/8.1/fpm/conf.d/cipi.ini
 sudo touch $PHPINI
 sudo cat > "$PHPINI" <<EOF
@@ -291,9 +295,6 @@ max_execution_time = 180
 max_input_time = 180
 EOF
 sudo service php8.1-fpm restart
-
-# PHP EXTRA
-sudo apt-get -y install php-dev php-pear
 
 
 # PHP CLI
@@ -329,7 +330,9 @@ echo "GIT setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get -y install git
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install git
 
 
 
@@ -340,8 +343,10 @@ echo "Supervisor setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get -y install supervisor
-service supervisor restart
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install supervisor
+sudo service supervisor restart
 
 
 
@@ -400,8 +405,9 @@ echo "MySQL setup..."
 echo "${reset}"
 sleep 1s
 
-
-sudo apt-get install -y mysql-server
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
 SECURE_MYSQL=$(expect -c "
 set timeout 10
 spawn mysql_secure_installation
@@ -438,7 +444,9 @@ echo "Redis setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt install -y redis-server
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install redis-server
 sudo rpl -i -w "supervised no" "supervised systemd" /etc/redis/redis.conf
 sudo systemctl restart redis.service
 
@@ -451,8 +459,10 @@ echo "Let's Encrypt setup..."
 echo "${reset}"
 sleep 1s
 
-sudo apt-get install -y certbot
-sudo apt-get install -y python3-certbot-nginx
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install certbot
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install python3-certbot-nginx
 
 
 
@@ -472,9 +482,9 @@ sudo cat > "$NODE" <<EOF
 deb https://deb.nodesource.com/node_16.x focal main
 deb-src https://deb.nodesource.com/node_16.x focal main
 EOF
-sudo apt-get update
-sudo apt -y install nodejs
-sudo apt -y install npm
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nodejs
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install npm
 
 
 
@@ -565,7 +575,7 @@ cat > "$TASK" <<EOF
 0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
 0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
 20 4 * * 7 apt-get -y update
-40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
+sudo DEBIAN_FRONTEND=noninteractive * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 20 5 * * 7 apt-get clean && apt-get autoclean
 50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 * * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
@@ -576,7 +586,6 @@ sudo systemctl restart nginx.service
 sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
 sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
-sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
 sudo service sshd restart
 TASK=/etc/supervisor/conf.d/cipi.conf
 touch $TASK
