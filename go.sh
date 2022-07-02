@@ -480,63 +480,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y install npm
 
 
 
-# FINE TUNING
-clear
-echo "${bggreen}${black}${bold}"
-echo "Fine Tuning..."
-echo "${reset}"
-sleep 1s
-
-sudo chown www-data:cipi -R /var/www/html
-sudo chmod -R 750 /var/www/html
-sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
-sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
-sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
-sudo systemctl daemon-reload
-
-TASK=/etc/cron.d/cipi.crontab
-touch $TASK
-cat > "$TASK" <<EOF
-0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
-0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
-20 4 * * 7 apt-get -y update
-40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
-20 5 * * 7 apt-get clean && apt-get autoclean
-50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
-* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
-5 2 * * * cd /var/www/html/utility/cipi-update && sh run.sh >> /dev/null 2>&1
-EOF
-crontab $TASK
-sudo systemctl restart nginx.service
-sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
-sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
-sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
-#sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
-sudo service sshd restart
-TASK=/etc/supervisor/conf.d/cipi.conf
-touch $TASK
-cat > "$TASK" <<EOF
-[program:cipi-worker]
-process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/html/artisan queue:work --sleep=3 --tries=3 --max-time=3600
-autostart=true
-autorestart=true
-stopasgroup=true
-killasgroup=true
-user=cipi
-numprocs=8
-redirect_stderr=true
-stdout_logfile=/var/www/worker.log
-stopwaitsecs=3600
-EOF
-sudo supervisorctl reread
-sudo supervisorctl update
-sudo supervisorctl start all
-sudo service supervisor restart
-
-
-
-
 #PANEL INSTALLATION
 clear
 echo "${bggreen}${black}${bold}"
@@ -599,12 +542,72 @@ sudo chmod -R 775 /var/www/html
 
 
 
+
+# FINE TUNING
+clear
+echo "${bggreen}${black}${bold}"
+echo "Fine tuning..."
+echo "${reset}"
+sleep 1s
+
+sudo chown www-data:cipi -R /var/www/html
+sudo chmod -R 750 /var/www/html
+sudo echo 'DefaultStartLimitIntervalSec=1s' >> /usr/lib/systemd/system/user@.service
+sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
+sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
+sudo systemctl daemon-reload
+
+TASK=/etc/cron.d/cipi.crontab
+touch $TASK
+cat > "$TASK" <<EOF
+0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
+0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
+20 4 * * 7 apt-get -y update
+40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
+20 5 * * 7 apt-get clean && apt-get autoclean
+50 5 * * * echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
+* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1
+5 2 * * * cd /var/www/html/utility/cipi-update && sh run.sh >> /dev/null 2>&1
+EOF
+crontab $TASK
+sudo systemctl restart nginx.service
+sudo rpl -i -w "#PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
+sudo rpl -i -w "# PasswordAuthentication" "PasswordAuthentication" /etc/ssh/sshd_config
+sudo rpl -i -w "PasswordAuthentication no" "PasswordAuthentication yes" /etc/ssh/sshd_config
+sudo rpl -i -w "PermitRootLogin yes" "PermitRootLogin no" /etc/ssh/sshd_config
+sudo service sshd restart
+TASK=/etc/supervisor/conf.d/cipi.conf
+touch $TASK
+cat > "$TASK" <<EOF
+[program:cipi-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+user=cipi
+numprocs=8
+redirect_stderr=true
+stdout_logfile=/var/www/worker.log
+stopwaitsecs=3600
+EOF
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start all
+sudo service supervisor restart
+
+
+
+
 # COMPLETE
 clear
 echo "${bggreen}${black}${bold}"
 echo "Cipi installation has been completed..."
 echo "${reset}"
 sleep 1s
+
+
 
 
 
