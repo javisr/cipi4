@@ -582,7 +582,7 @@ cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
 cd /var/www/html && php artisan migrate --seed --force
 EOF
-su -c $CIPISETUP cipi
+su -c "sh $CIPISETUP" cipi
 sudo unlink $CIPISETUP
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
 sudo touch $CIPIBULD
