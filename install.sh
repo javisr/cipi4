@@ -554,18 +554,6 @@ cd /var/www && git clone https://github.com/$REPO.git html
 cd /var/www/html && git pull
 cd /var/www/html && git checkout $BRANCH
 cd /var/www/html && git pull
-cd /var/www/html && sudo unlink .env
-cd /var/www/html && sudo cp .env.example .env
-cd /var/www/html && php artisan key:generate
-sudo rpl -i -w "DB_USERNAME=dbuser" "DB_USERNAME=cipi" /var/www/html/.env
-sudo rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$DBPASS" /var/www/html/.env
-sudo rpl -i -w "DB_DATABASE=dbname" "DB_DATABASE=cipi" /var/www/html/.env
-sudo rpl -i -w "APP_URL=http://localhost" "APP_URL=http://$IP" /var/www/html/.env
-sudo rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
-sudo rpl -i -w "CIPISERVERID" $SERVERID /var/www/html/database/seeders/DatabaseSeeder.php
-sudo rpl -i -w "CIPIIP" $IP /var/www/html/database/seeders/DatabaseSeeder.php
-sudo rpl -i -w "CIPIPASS" $PASS /var/www/html/database/seeders/DatabaseSeeder.php
-sudo rpl -i -w "CIPIDB" $DBPASS /var/www/html/database/seeders/DatabaseSeeder.php
 sudo chmod -R o+w /var/www/html/storage
 sudo chmod -R 775 /var/www/html/storage
 sudo chmod -R o+w /var/www/html/bootstrap/cache
@@ -575,9 +563,22 @@ sudo chmod -R 775 /var/www/html
 su cipi
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
-cd /var/www/html && php artisan cache:clear
+cd /var/www/html && sudo unlink .env
+cd /var/www/html && sudo cp .env.example .env
+cd /var/www/html && php artisan key:generate
+rpl -i -w "DB_USERNAME=dbuser" "DB_USERNAME=cipi" /var/www/html/.env
+rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$DBPASS" /var/www/html/.env
+rpl -i -w "DB_DATABASE=dbname" "DB_DATABASE=cipi" /var/www/html/.env
+rpl -i -w "APP_URL=http://localhost" "APP_URL=http://$IP" /var/www/html/.env
+rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
+rpl -i -w "CIPISERVERID" $SERVERID /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIIP" $IP /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIPASS" $PASS /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIDB" $DBPASS /var/www/html/database/seeders/DatabaseSeeder.php
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
+cd /var/www/html && php artisan config:cache
+cd /var/www/html && php artisan route:cache
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
 touch $CIPIBULD
 cat > $CIPIBULD <<EOF
