@@ -561,10 +561,9 @@ sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
 su cipi
+cd /var/www/html && unlink .env
+cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
-cd /var/www/html && php artisan key:generate
-cd /var/www/html && sudo unlink .env
-cd /var/www/html && sudo cp .env.example .env
 cd /var/www/html && php artisan key:generate
 rpl -i -w "DB_USERNAME=dbuser" "DB_USERNAME=cipi" /var/www/html/.env
 rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$DBPASS" /var/www/html/.env
@@ -579,6 +578,7 @@ cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
+cd /var/www/html && php artisan migrate --seed --force
 CIPIBULD=/var/www/html/public/build_$SERVERID.php
 touch $CIPIBULD
 cat > $CIPIBULD <<EOF
@@ -589,9 +589,6 @@ touch $CIPIPING
 cat > $CIPIPING <<EOF
 Up
 EOF
-cd /var/www/html && php artisan migrate --seed --force
-cd /var/www/html && php artisan config:cache
-
 
 
 # COMPLETE
