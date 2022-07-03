@@ -1617,11 +1617,18 @@ select {
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
 .font-medium {
   font-weight: 500;
 }
 .font-semibold {
   font-weight: 600;
+}
+.font-black {
+  font-weight: 900;
 }
 .uppercase {
   text-transform: uppercase;
