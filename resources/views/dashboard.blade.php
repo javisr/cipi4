@@ -1,14 +1,72 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
+        <div class="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
+            <div class="ml-4 mt-2">
+                <h3 class="text-2xl leading-6 font-medium text-gray-900 font-black">Dashboard</h3>
+            </div>
+            <div class="ml-4 mt-2 flex-shrink-0">
+                <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create new job</button>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <x-jet-welcome />
+
+                <div class="p-6 sm:px-20 bg-white">
+                    <div>
+                        <span class="h-12 w-auto">
+                            <div class="text-xl">
+                                Server IP
+                            </div>
+                            <div class="text-3xl">
+                                <span onclick="copyInClipboard('123.123.123.123')" style="cursor: pointer;">
+                                    123.123.123.123
+                                </span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-3">
+                    <div class="p-8">
+                        <div class="flex items-center">
+                            <i class="text-3xl text-indigo-300 fa-solid fa-microchip"></i>
+                            <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">CPU</div>
+                        </div>
+                        <div class="ml-12">
+                            <div class="mt-2 text-5xl text-gray-500">
+                                100%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8">
+                        <div class="flex items-center">
+                            <i class="text-3xl text-indigo-300 fa-solid fa-memory"></i>
+                            <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">RAM</div>
+                        </div>
+                        <div class="ml-12">
+                            <div class="mt-2 text-5xl text-gray-500">
+                                100%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-8">
+                        <div class="flex items-center">
+                            <i class="text-3xl text-indigo-300 fa-solid fa-hard-drive"></i>
+                            <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">HDD</div>
+                        </div>
+                        <div class="ml-12">
+                            <div class="mt-2 text-5xl text-gray-500">
+                                100%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

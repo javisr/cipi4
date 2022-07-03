@@ -44,5 +44,16 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script>
+            function copyInClipboard(text) {
+                var tempCopyField = document.createElement("textarea");
+                document.body.appendChild(tempCopyField);
+                tempCopyField.value = text;
+                tempCopyField.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempCopyField);
+            }
+        </script>
     </body>
 </html>
