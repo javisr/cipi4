@@ -55,9 +55,8 @@
                 tempCopyField.select();
                 document.execCommand("copy");
                 document.body.removeChild(tempCopyField);
-                setTimeout(function(element, elementText) {
-                    $('#'+element).html(elementText);
-                }, 500);
+                setTimeout(function(){}, 10000);
+                $('#'+element).html(elementText);
             }
         </script>
     </body>
