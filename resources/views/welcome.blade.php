@@ -23,7 +23,6 @@
                 <div class="flex items-center pt-8 sm:justify-start sm:pt-0">
                     <div class="px-4 text-lg text-gray-700 uppercase border-r border-gray-400 tracking-wider">
                         Server Up                    </div>
-
                     <div class="ml-4 text-lg text-gray-500 tracking-wider">
                         {{ config('app.name') }}                   </div>
                 </div>
