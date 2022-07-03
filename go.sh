@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #################################################### CONFIGURATION ###
-CIPI_CURRENT_BUILD=2207023
 CIPI_USER_PASSWORD=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
 CIPI_DATABASE_PASSWORD=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
 CIPI_GIT_REPOSITORY=andreapollastri/cipi
