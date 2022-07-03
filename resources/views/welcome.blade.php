@@ -25,7 +25,7 @@
                         Server Up                    </div>
 
                     <div class="ml-4 text-lg text-gray-500 tracking-wider">
-                        cipi.sh                   </div>
+                        {{ config('app.name') }}                   </div>
                 </div>
             </div>
         </div>
