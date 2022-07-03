@@ -1,17 +1,15 @@
 #!/bin/bash
 
 #################################################### CONFIGURATION ###
-BUILD=20220702001
-PASS=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-DBPASS=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-SERVERID=$(openssl rand -base64 12|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-REPO=andreapollastri/cipi
+CIPI_CURRENT_BUILD=2207023
+CIPI_USER_PASSWORD=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
+CIPI_DATABASE_PASSWORD=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
+CIPI_GIT_REPOSITORY=andreapollastri/cipi
 if [ -z "$1" ];
-    BRANCH=latest
+    CIPI_GIT_BRANCH=latest
 then
-    BRANCH=$1
+    CIPI_GIT_BRANCH=$1
 fi
-
 
 
 ####################################################   CLI TOOLS   ###
@@ -32,8 +30,6 @@ bggreen=$(tput setab 2)
 bgyellow=$(tput setab 4)
 bgblue=$(tput setab 4)
 bgpurple=$(tput setab 5)
-
-
 
 
 #################################################### CIPI SETUP ######
@@ -118,6 +114,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common curl wget nano vim rpl sed zip unzip expect dirmngr apt-transport-https lsb-release ca-certificates dnsutils dos2unix htop
 
 
+
 # GET IP
 clear
 clear
@@ -126,7 +123,8 @@ echo "Getting IP..."
 echo "${reset}"
 sleep 1s
 
-IP=$(curl -s https://checkip.amazonaws.com)
+CIPI_SERVER_IP=$(curl -s https://checkip.amazonaws.com)
+
 
 
 # MOTD WELCOME MESSAGE
@@ -136,9 +134,9 @@ echo "Motd settings..."
 echo "${reset}"
 sleep 1s
 
-WELCOME=/etc/motd
-sudo touch $WELCOME
-sudo cat > "$WELCOME" <<EOF
+CIPI_WELCOME_FILE=/etc/motd
+sudo touch $CIPI_WELCOME_FILE
+sudo cat > "$CIPI_WELCOME_FILE" <<EOF
 
  ██████ ██ ██████  ██ 
 ██      ██ ██   ██ ██ 
@@ -202,8 +200,9 @@ sudo pam-auth-update --package
 sudo mount -o remount,rw /
 sudo chmod 640 /etc/shadow
 sudo useradd -m -s /bin/bash cipi
-echo "cipi:$PASS"|sudo chpasswd
+echo "cipi:$CIPI_USER_PASSWORD"|sudo chpasswd
 sudo usermod -aG sudo cipi
+
 
 
 # NGINX
@@ -222,6 +221,7 @@ sudo systemctl enable nginx.service
 sudo systemctl restart nginx.service
 
 
+
 # FIREWALL
 clear
 echo "${bggreen}${black}${bold}"
@@ -231,10 +231,10 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fail2ban
-JAIL=/etc/fail2ban/jail.local
-sudo unlink JAIL
-sudo touch $JAIL
-sudo cat > "$JAIL" <<EOF
+CIPI_JAIL_FILE=/etc/fail2ban/jail.local
+sudo unlink CIPI_JAIL_FILE
+sudo touch $CIPI_JAIL_FILE
+sudo cat > "$CIPI_JAIL_FILE" <<EOF
 [DEFAULT]
 bantime = 3600
 banaction = iptables-multiport
@@ -248,7 +248,6 @@ sudo ufw allow ssh
 sudo ufw allow http
 sudo ufw allow https
 sudo ufw allow "Nginx Full"
-
 
 
 
@@ -282,9 +281,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fileinfo
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-imap
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-cli
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-openssl
-PHPINI=/etc/php/8.1/fpm/conf.d/cipi.ini
-sudo touch $PHPINI
-sudo cat > "$PHPINI" <<EOF
+CIPI_PHP_INI=/etc/php/8.1/fpm/conf.d/cipi.ini
+sudo touch $CIPI_PHP_INI
+sudo cat > "$CIPI_PHP_INI" <<EOF
 memory_limit = 256M
 upload_max_filesize = 256M
 post_max_size = 256M
@@ -292,6 +291,7 @@ max_execution_time = 180
 max_input_time = 180
 EOF
 sudo service php8.1-fpm restart
+
 
 
 # PHP CLI
@@ -352,12 +352,12 @@ echo "Default vhost..."
 echo "${reset}"
 sleep 1s
 
-NGINX=/etc/nginx/sites-available/default
-if test -f "$NGINX"; then
-    sudo unlink NGINX
+CIPI_NGINX_CONFIG=/etc/nginx/sites-available/default
+if test -f "$CIPI_NGINX_CONFIG"; then
+    sudo unlink CIPI_NGINX_CONFIG
 fi
-sudo touch $NGINX
-sudo cat > "$NGINX" <<EOF
+sudo touch $CIPI_NGINX_CONFIG
+sudo cat > "$CIPI_NGINX_CONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -391,8 +391,6 @@ sudo systemctl restart nginx.service
 
 
 
-
-
 # MYSQL
 clear
 echo "${bggreen}${black}${bold}"
@@ -402,15 +400,15 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
-SECURE_MYSQL=$(expect -c "
+CIPI_SECURE_MYSQL=$(expect -c "
 set timeout 10
 spawn mysql_secure_installation
 expect \"Press y|Y for Yes, any other key for No:\"
 send \"n\r\"
 expect \"New password:\"
-send \"$DBPASS\r\"
+send \"$CIPI_DATABASE_PASSOWORD\r\"
 expect \"Re-enter new password:\"
-send \"$DBPASS\r\"
+send \"$CIPI_DATABASE_PASSOWORD\r\"
 expect \"Remove anonymous users? (Press y|Y for Yes, any other key for No)\"
 send \"y\r\"
 expect \"Disallow root login remotely? (Press y|Y for Yes, any other key for No)\"
@@ -421,10 +419,10 @@ expect \"Reload privilege tables now? (Press y|Y for Yes, any other key for No) 
 send \"y\r\"
 expect eof
 ")
-echo "$SECURE_MYSQL"
-/usr/bin/mysql -u root -p$DBPASS <<EOF
+echo "$CIPI_SECURE_MYSQL"
+/usr/bin/mysql -u root -p$CIPI_DATABASE_PASSOWORD <<EOF
 use mysql;
-CREATE USER 'cipi'@'%' IDENTIFIED WITH mysql_native_password BY '$DBPASS';
+CREATE USER 'cipi'@'%' IDENTIFIED WITH mysql_native_password BY '$CIPI_DATABASE_PASSOWORD';
 GRANT ALL PRIVILEGES ON *.* TO 'cipi'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
@@ -469,8 +467,8 @@ curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add 
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 NODE=/etc/apt/sources.list.d/nodesource.list
 sudo unlink NODE
-sudo touch $NODE
-sudo cat > "$NODE" <<EOF
+sudo touch $CIPI_NODE_REPOSITORY
+sudo cat > "$CIPI_NODE_REPOSITORY" <<EOF
 deb https://deb.nodesource.com/node_16.x focal main
 deb-src https://deb.nodesource.com/node_16.x focal main
 EOF
@@ -487,15 +485,14 @@ echo "Panel installation..."
 echo "${reset}"
 sleep 1s
 
-
-/usr/bin/mysql -u root -p$DBPASS <<EOF
+/usr/bin/mysql -u root -p$CIPI_DATABASE_PASSWORD <<EOF
 CREATE DATABASE IF NOT EXISTS cipi;
 EOF
 clear
 sudo rm -rf /var/www/html
-cd /var/www && git clone https://github.com/$REPO.git html
+cd /var/www && git clone https://github.com/$CIPI_GIT_REPOSITORY.git html
 cd /var/www/html && git pull
-cd /var/www/html && git checkout $BRANCH
+cd /var/www/html && git checkout $CIPI_GIT_BRANCH
 cd /var/www/html && git pull
 sudo chmod -R o+w /var/www/html/storage
 sudo chmod -R 775 /var/www/html/storage
@@ -504,42 +501,30 @@ sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
 CIPISETUP=/var/www/temp.sh
-sudo touch $CIPISETUP
-sudo cat > $CIPISETUP <<EOF
+sudo touch $CIPI_PANEL_SETUP
+sudo cat > $CIPI_PANEL_SETUP <<EOF
 cd /var/www/html && unlink .env
 cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
 rpl -i -w "DB_USERNAME=dbuser" "DB_USERNAME=cipi" /var/www/html/.env
-rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$DBPASS" /var/www/html/.env
+rpl -i -w "DB_PASSWORD=dbpass" "DB_PASSWORD=$CIPI_DATABASE_PASSOWORD" /var/www/html/.env
 rpl -i -w "DB_DATABASE=dbname" "DB_DATABASE=cipi" /var/www/html/.env
-rpl -i -w "APP_URL=http://localhost" "APP_URL=http://$IP" /var/www/html/.env
+rpl -i -w "APP_URL=http://localhost" "APP_URL=http://$CIPI_SERVER_IP" /var/www/html/.env
 rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
-rpl -i -w "CIPISERVERID" $SERVERID /var/www/html/database/seeders/DatabaseSeeder.php
-rpl -i -w "CIPIIP" $IP /var/www/html/database/seeders/DatabaseSeeder.php
-rpl -i -w "CIPIPASS" $PASS /var/www/html/database/seeders/DatabaseSeeder.php
-rpl -i -w "CIPIDB" $DBPASS /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIIP" $CIPI_SERVER_IP /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIPASS" $CIPI_USER_PASSWORD /var/www/html/database/seeders/DatabaseSeeder.php
+rpl -i -w "CIPIDB" $CIPI_DATABASE_PASSOWORD /var/www/html/database/seeders/DatabaseSeeder.php
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
 cd /var/www/html && php artisan migrate --seed --force
 EOF
-su -c "sh $CIPISETUP" cipi
-sudo unlink $CIPISETUP
-CIPIBULD=/var/www/html/public/build_$SERVERID.php
-sudo touch $CIPIBULD
-sudo cat > $CIPIBULD <<EOF
-$BUILD
-EOF
-CIPIPING=/var/www/html/public/ping_$SERVERID.php
-sudo touch $CIPIPING
-sudo cat > $CIPIPING <<EOF
-Up
-EOF
+su -c "sh $CIPI_PANEL_SETUP" cipi
+sudo unlink $CIPI_PANEL_SETUP
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
-
 
 
 
@@ -561,7 +546,7 @@ TASK=/etc/cron.d/cipi.crontab
 touch $TASK
 cat > "$TASK" <<EOF
 0 6 * * 0 certbot renew -n -q --pre-hook "service nginx stop" --post-hook "service nginx start"
-0 4 * * 0 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
+0 4 * * 4 certbot renew --nginx --non-interactive --post-hook "systemctl restart nginx.service"
 20 4 * * 7 apt-get -y update
 40 4 * * 7 DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical sudo apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
 20 5 * * 7 apt-get clean && apt-get autoclean
@@ -599,7 +584,6 @@ sudo service supervisor restart
 
 
 
-
 # COMPLETE
 clear
 echo "${bggreen}${black}${bold}"
@@ -609,21 +593,18 @@ sleep 1s
 
 
 
-
-
-
 # SETUP COMPLETE MESSAGE
 clear
 echo "***********************************************************"
-echo "                    SETUP COMPLETE"
+echo "                    SETUP COMPLETE "
 echo "***********************************************************"
 echo ""
 echo " SSH root user: cipi"
-echo " SSH root pass: $PASS"
+echo " SSH root pass: $CIPI_USER_PASSWORD"
 echo " MySQL root user: cipi"
-echo " MySQL root pass: $DBPASS"
+echo " MySQL root pass: $CIPI_DATABASE_PASSOWORD"
 echo ""
-echo " To manage your server visit: http://$IP/login"
+echo " To manage your server visit: http://$CIPI_SERVER_IP/login"
 echo " Default credentials are: panel@cipi.sh / Change-Me"
 echo ""
 echo "***********************************************************"
