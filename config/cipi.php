@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
     'ssh_port' => env('CIPI_SSH_SERVER_PORT', '22'),
