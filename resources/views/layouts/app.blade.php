@@ -46,13 +46,18 @@
         @livewireScripts
 
         <script>
-            function copyInClipboard(text) {
+            function copyInClipboard(element) {
                 var tempCopyField = document.createElement("textarea");
                 document.body.appendChild(tempCopyField);
-                tempCopyField.value = text;
+                elementText = $('#'+element).html();
+                $('#'+element).html('Copied to clipboard!');
+                tempCopyField.value = elementText;
                 tempCopyField.select();
                 document.execCommand("copy");
                 document.body.removeChild(tempCopyField);
+                setTimeout(function(element, elementText) {
+                    $('#'+element).html(elementText);
+                }, 500);
             }
         </script>
     </body>

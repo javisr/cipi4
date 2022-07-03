@@ -21,9 +21,9 @@
                                 Server IP
                             </div>
                             <div class="text-3xl">
-                                <span onclick="copyInClipboard('123.123.123.123')" style="cursor: pointer;">
-                                    123.123.123.123
-                                </span>
+                                <div onclick="copyInClipboard('ip')" style="cursor: pointer;">
+                                    <span id="ip">123.123.123.123</span> <sup><i class="text-gray-200 text-sm fa-solid fa-clone"></i></sup>
+                                </div>
                             </div>
                         </span>
                     </div>
