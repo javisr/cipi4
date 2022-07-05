@@ -17,7 +17,7 @@
                         </div>
                         <div class="text-3xl">
                             <div onclick="copyInClipboard('url')" style="cursor: pointer;">
-                                <span id="url">{{ config('app.url') }}</span> <sup id="url-copy"><i class="text-gray-200 text-sm fa-solid fa-clone"></i>
+                                <span id="url">{{ config('app.url') }}/panel</span> <sup id="url-copy"><i class="text-gray-200 text-sm fa-solid fa-clone"></i>
                             </div>
                         </div>
                     </span>
