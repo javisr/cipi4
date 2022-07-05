@@ -123,6 +123,7 @@ echo "${reset}"
 sleep 1s
 
 SERVERIP=$(curl -s https://checkip.amazonaws.com)
+SERVERIPWITHDASH="${SERVERIP//./-}"
 
 
 
@@ -360,7 +361,7 @@ sudo cat > "$NGINXCONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name cipi.$SERVERIP.sslip.io
+    server_name cipi-$SERVERIPWITHDASH.nip.io
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -508,7 +509,7 @@ cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
 rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
-rpl -i -w "APP_URL=http://localhost" "APP_URL=https://cipi.$SERVERIP.sslip.io" /var/www/html/.env
+rpl -i -w "APP_URL=http://localhost" "APP_URL=https://cipi-$SERVERIPWITHDASH.nip.io" /var/www/html/.env
 rpl -i -w "DB_PASSWORD=" "DB_PASSWORD=$DATABASEPASSWORD" /var/www/html/.env
 rpl -i -w "CIPI_SSH_SERVER_HOST=" "CIPI_SSH_SERVER_HOST=$SERVERIP" /var/www/html/.env
 rpl -i -w "CIPI_SSH_SERVER_PASS=" "CIPI_SSH_SERVER_PASS=$USERPASSWORD" /var/www/html/.env
@@ -544,7 +545,7 @@ sudo -S sudo fuser -k 80/tcp
 sudo -S sudo fuser -k 443/tcp
 sudo systemctl restart nginx.service
 ufw disable
-certbot --nginx -d cipi.$SERVERIP.sslip.io --non-interactive --agree-tos --register-unsafely-without-email
+certbot --nginx -d cipi-$SERVERIPWITHDASH.nip.io --non-interactive --agree-tos --register-unsafely-without-email
 sudo sed -i 's/443 ssl/443 ssl http2/g' /etc/nginx/sites-enabled/default.conf
 sudo ufw --force enable
 sudo systemctl restart nginx.service
@@ -612,7 +613,7 @@ echo " MySQL root user: cipi"
 echo " MySQL root pass: $DATABASEPASSWORD"
 echo ""
 echo " To manage your server visit: "
-echo " https://cipi.$SERVERIP.sslip.io/login"
+echo " https://cipi-$SERVERIPWITHDASH.nip.io/login"
 echo " Default credentials are: admin@cipi.sh / password"
 echo ""
 echo "***********************************************************"
