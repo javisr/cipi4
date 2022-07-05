@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #################################################### CONFIGURATION ###
-CIPI_USER_PASSWORD=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-CIPI_DATABASE_PASSWORD=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-CIPI_GIT_REPOSITORY=andreapollastri/cipi
+USERPASSWORD=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
+DATABASEPASSWORD=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
+GITREPOSITORY=andreapollastri/cipi
 if [ -z "$1" ];
-    CIPI_GIT_BRANCH=latest
+    GITBRANCH=latest
 then
-    CIPI_GIT_BRANCH=$1
+    GITBRANCH=$1
 fi
 
 
@@ -122,7 +122,7 @@ echo "Getting IP..."
 echo "${reset}"
 sleep 1s
 
-CIPI_SERVER_IP=$(curl -s https://checkip.amazonaws.com)
+SERVERIP=$(curl -s https://checkip.amazonaws.com)
 
 
 
@@ -133,9 +133,9 @@ echo "Motd settings..."
 echo "${reset}"
 sleep 1s
 
-CIPI_WELCOME_FILE=/etc/motd
-sudo touch $CIPI_WELCOME_FILE
-sudo cat > "$CIPI_WELCOME_FILE" <<EOF
+WELCOMEFILE=/etc/motd
+sudo touch $WELCOMEFILE
+sudo cat > "$WELCOMEFILE" <<EOF
 
  ██████ ██ ██████  ██ 
 ██      ██ ██   ██ ██ 
@@ -199,7 +199,7 @@ sudo pam-auth-update --package
 sudo mount -o remount,rw /
 sudo chmod 640 /etc/shadow
 sudo useradd -m -s /bin/bash cipi
-echo "cipi:$CIPI_USER_PASSWORD"|sudo chpasswd
+echo "cipi:$USERPASSWORD"|sudo chpasswd
 sudo usermod -aG sudo cipi
 
 
@@ -230,10 +230,10 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install fail2ban
-CIPI_JAIL_FILE=/etc/fail2ban/jail.local
-sudo unlink CIPI_JAIL_FILE
-sudo touch $CIPI_JAIL_FILE
-sudo cat > "$CIPI_JAIL_FILE" <<EOF
+JAILFILE=/etc/fail2ban/jail.local
+sudo unlink $JAILFILE
+sudo touch $JAILFILE
+sudo cat > "$JAILFILE" <<EOF
 [DEFAULT]
 bantime = 3600
 banaction = iptables-multiport
@@ -280,9 +280,9 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fileinfo
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-imap
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-cli
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-openssl
-CIPI_PHP_INI=/etc/php/8.1/fpm/conf.d/cipi.ini
-sudo touch $CIPI_PHP_INI
-sudo cat > "$CIPI_PHP_INI" <<EOF
+PHPINI=/etc/php/8.1/fpm/conf.d/cipi.ini
+sudo touch $PHPINI
+sudo cat > "$PHPINI" <<EOF
 memory_limit = 256M
 upload_max_filesize = 256M
 post_max_size = 256M
@@ -351,16 +351,16 @@ echo "Default vhost..."
 echo "${reset}"
 sleep 1s
 
-CIPI_NGINX_CONFIG=/etc/nginx/sites-available/default.conf
-if test -f "$CIPI_NGINX_CONFIG"; then
-    sudo unlink CIPI_NGINX_CONFIG
+NGINXCONFIG=/etc/nginx/sites-available/default.conf
+if test -f "$NGINXCONFIG"; then
+    sudo unlink $NGINXCONFIG
 fi
-sudo touch $CIPI_NGINX_CONFIG
-sudo cat > "$CIPI_NGINX_CONFIG" <<EOF
+sudo touch $NGINXCONFIG
+sudo cat > "$NGINXCONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name cipi.$CIPI_SERVER_IP.sslip.io
+    server_name cipi.$SERVERIP.sslip.io
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -400,15 +400,15 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
-CIPI_SECURE_MYSQL=$(expect -c "
+SECUREMYSQL=$(expect -c "
 set timeout 10
 spawn mysql_secure_installation
 expect \"Press y|Y for Yes, any other key for No:\"
 send \"n\r\"
 expect \"New password:\"
-send \"$CIPI_DATABASE_PASSOWORD\r\"
+send \"$DATABASEPASSWORD\r\"
 expect \"Re-enter new password:\"
-send \"$CIPI_DATABASE_PASSOWORD\r\"
+send \"$DATABASEPASSWORD\r\"
 expect \"Remove anonymous users? (Press y|Y for Yes, any other key for No)\"
 send \"y\r\"
 expect \"Disallow root login remotely? (Press y|Y for Yes, any other key for No)\"
@@ -419,10 +419,10 @@ expect \"Reload privilege tables now? (Press y|Y for Yes, any other key for No) 
 send \"y\r\"
 expect eof
 ")
-echo "$CIPI_SECURE_MYSQL"
-/usr/bin/mysql -u root -p$CIPI_DATABASE_PASSOWORD <<EOF
+echo "$CIPISECUREMYSQL"
+/usr/bin/mysql -u root -p$DATABASEPASSWORD <<EOF
 use mysql;
-CREATE USER 'cipi'@'%' IDENTIFIED WITH mysql_native_password BY '$CIPI_DATABASE_PASSOWORD';
+CREATE USER 'cipi'@'%' IDENTIFIED WITH mysql_native_password BY '$DATABASEPASSWORD';
 GRANT ALL PRIVILEGES ON *.* TO 'cipi'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EOF
@@ -465,10 +465,10 @@ sleep 1s
 
 curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-NODE=/etc/apt/sources.list.d/nodesource.list
-sudo unlink NODE
-sudo touch $CIPI_NODE_REPOSITORY
-sudo cat > "$CIPI_NODE_REPOSITORY" <<EOF
+NODEREPOSITORY=/etc/apt/sources.list.d/nodesource.list
+sudo unlink $NODEREPOSITORY
+sudo touch $NODEREPOSITORY
+sudo cat > "$NODEREPOSITORY" <<EOF
 deb https://deb.nodesource.com/node_16.x focal main
 deb-src https://deb.nodesource.com/node_16.x focal main
 EOF
@@ -485,14 +485,15 @@ echo "Panel installation..."
 echo "${reset}"
 sleep 1s
 
-/usr/bin/mysql -u root -p$CIPI_DATABASE_PASSWORD <<EOF
+/usr/bin/mysql -u root -p$DATABASEPASSWORD <<EOF
 CREATE DATABASE IF NOT EXISTS cipi;
 EOF
 clear
 sudo rm -rf /var/www/html
-cd /var/www && git clone https://github.com/$CIPI_GIT_REPOSITORY.git html
+cd /var/www && git clone https://github.com/
+GITREPOSITORY.git html
 cd /var/www/html && git pull
-cd /var/www/html && git checkout $CIPI_GIT_BRANCH
+cd /var/www/html && git checkout $GITBRANCH
 cd /var/www/html && git pull
 sudo chmod -R o+w /var/www/html/storage
 sudo chmod -R 775 /var/www/html/storage
@@ -500,26 +501,27 @@ sudo chmod -R o+w /var/www/html/bootstrap/cache
 sudo chmod -R 775 /var/www/html/bootstrap/cache
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
-CIPISETUP=/var/www/temp.sh
-sudo touch $CIPI_PANEL_SETUP
-sudo cat > $CIPI_PANEL_SETUP <<EOF
+PANELSETUP=/var/www/panel.sh
+sudo touch $PANELSETUP
+sudo cat > $PANELSETUP <<EOF
 cd /var/www/html && unlink .env
 cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
 rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
-rpl -i -w "APP_URL=http://localhost" "APP_URL=http://$CIPI_SERVER_IP" /var/www/html/.env
-rpl -i -w "CIPI_SSH_SERVER_HOST=" "CIPI_SSH_SERVER_HOST=$CIPI_SERVER_IP" /var/www/html/.env
-rpl -i -w "CIPI_SSH_SERVER_PASS=" "CIPI_SSH_SERVER_PASS=$CIPI_USER_PASSWORD" /var/www/html/.env
-rpl -i -w "CIPI_SQL_DBROOT_PASS=" "CIPI_SQL_DBROOT_PASS=$CIPI_DATABASE_PASSOWORD" /var/www/html/.env
+rpl -i -w "APP_URL=http://localhost" "APP_URL=https://cipi.$SERVERIP.sslip.io" /var/www/html/.env
+rpl -i -w "DB_PASSWORD=" "DB_PASSWORD=$DATABASEPASSWORD" /var/www/html/.env
+rpl -i -w "CIPI_SSH_SERVER_HOST=" "CIPI_SSH_SERVER_HOST=$SERVERIP" /var/www/html/.env
+rpl -i -w "CIPI_SSH_SERVER_PASS=" "CIPI_SSH_SERVER_PASS=$USERPASSWORD" /var/www/html/.env
+rpl -i -w "CIPI_SQL_DBROOT_PASS=" "CIPI_SQL_DBROOT_PASS=$DATABASEPASSWORD" /var/www/html/.env
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
 cd /var/www/html && php artisan migrate --seed --force
 EOF
-su -c "sh $CIPI_PANEL_SETUP" cipi
-sudo unlink $CIPI_PANEL_SETUP
+su -c "sh $PANELSETUP" cipi
+sudo unlink $PANELSETUP
 sudo chown -R www-data:cipi /var/www/html
 sudo chmod -R 775 /var/www/html
 
@@ -543,7 +545,7 @@ sudo -S sudo fuser -k 80/tcp
 sudo -S sudo fuser -k 443/tcp
 sudo systemctl restart nginx.service
 ufw disable
-certbot --nginx -d cipi.$CIPI_SERVER_IP.sslip.io --non-interactive --agree-tos --register-unsafely-without-email
+certbot --nginx -d cipi.$SERVERIP.sslip.io --non-interactive --agree-tos --register-unsafely-without-email
 sudo sed -i 's/443 ssl/443 ssl http2/g' /etc/nginx/sites-enabled/default.conf
 sudo ufw --force enable
 sudo systemctl restart nginx.service
@@ -606,12 +608,12 @@ echo "                    SETUP COMPLETE "
 echo "***********************************************************"
 echo ""
 echo " SSH root user: cipi"
-echo " SSH root pass: $CIPI_USER_PASSWORD"
+echo " SSH root pass: $USERPASSWORD"
 echo " MySQL root user: cipi"
-echo " MySQL root pass: $CIPI_DATABASE_PASSOWORD"
+echo " MySQL root pass: $DATABASEPASSWORD"
 echo ""
 echo " To manage your server visit: "
-echo " https://cipi.$CIPI_SERVER_IP.sslip.io/login"
+echo " https://cipi.$SERVERIP.sslip.io/login"
 echo " Default credentials are: admin@cipi.sh / password"
 echo ""
 echo "***********************************************************"
