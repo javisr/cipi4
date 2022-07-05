@@ -123,8 +123,7 @@ echo "${reset}"
 sleep 1s
 
 SERVERIP=$(curl -s https://checkip.amazonaws.com)
-SERVERIPWITHDASH="${SERVERIP//./-}"
-
+SERVERIPWITHDASH="$( echo "$SERVERIP" | tr  '.' '-'  )"
 
 
 # MOTD WELCOME MESSAGE
