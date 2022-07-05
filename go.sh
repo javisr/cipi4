@@ -508,11 +508,12 @@ cd /var/www/html && cp .env.example .env
 cd /var/www/html && composer install --no-interaction
 cd /var/www/html && php artisan key:generate
 rpl -i -w "APP_ENV=local" "APP_ENV=production" /var/www/html/.env
+rpl -i -w "APP_DEBUG=true" "APP_DEBUG=false" /var/www/html/.env
 rpl -i -w "APP_URL=http://localhost" "APP_URL=https://cipi-$SERVERIPWITHDASH.sslip.io" /var/www/html/.env
-rpl -i -w "DB_PASSWORD=" "DB_PASSWORD=$DATABASEPASSWORD" /var/www/html/.env
-rpl -i -w "CIPI_SSH_SERVER_HOST=" "CIPI_SSH_SERVER_HOST=$SERVERIP" /var/www/html/.env
-rpl -i -w "CIPI_SSH_SERVER_PASS=" "CIPI_SSH_SERVER_PASS=$USERPASSWORD" /var/www/html/.env
-rpl -i -w "CIPI_SQL_DBROOT_PASS=" "CIPI_SQL_DBROOT_PASS=$DATABASEPASSWORD" /var/www/html/.env
+rpl -i -w "DB_PASSWORD=changeme" "DB_PASSWORD=$DATABASEPASSWORD" /var/www/html/.env
+rpl -i -w "CIPI_SSH_SERVER_HOST=changeme" "CIPI_SSH_SERVER_HOST=$SERVERIP" /var/www/html/.env
+rpl -i -w "CIPI_SSH_SERVER_PASS=changeme" "CIPI_SSH_SERVER_PASS=$USERPASSWORD" /var/www/html/.env
+rpl -i -w "CIPI_SQL_DBROOT_PASS=changeme" "CIPI_SQL_DBROOT_PASS=$DATABASEPASSWORD" /var/www/html/.env
 cd /var/www/html && php artisan storage:link
 cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
