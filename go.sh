@@ -351,7 +351,7 @@ echo "Default vhost..."
 echo "${reset}"
 sleep 1s
 
-CIPI_NGINX_CONFIG=/etc/nginx/sites-available/default
+CIPI_NGINX_CONFIG=/etc/nginx/sites-available/default.conf
 if test -f "$CIPI_NGINX_CONFIG"; then
     sudo unlink CIPI_NGINX_CONFIG
 fi
@@ -360,6 +360,7 @@ sudo cat > "$CIPI_NGINX_CONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
+    server_name cipi.$CIPI_SERVER_IP.sslip.io
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -538,6 +539,15 @@ sudo echo 'DefaultStartLimitBurst=50' >> /usr/lib/systemd/system/user@.service
 sudo echo 'StartLimitBurst=0' >> /usr/lib/systemd/system/user@.service
 sudo systemctl daemon-reload
 
+sudo -S sudo fuser -k 80/tcp
+sudo -S sudo fuser -k 443/tcp
+sudo systemctl restart nginx.service
+ufw disable
+certbot --nginx -d cipi.$CIPI_SERVER_IP.sslip.io --non-interactive --agree-tos --register-unsafely-without-email
+sudo sed -i 's/443 ssl/443 ssl http2/g' /etc/nginx/sites-enabled/default.conf
+sudo ufw --force enable
+sudo systemctl restart nginx.service
+
 TASK=/etc/cron.d/cipi.crontab
 touch $TASK
 cat > "$TASK" <<EOF
@@ -600,8 +610,9 @@ echo " SSH root pass: $CIPI_USER_PASSWORD"
 echo " MySQL root user: cipi"
 echo " MySQL root pass: $CIPI_DATABASE_PASSOWORD"
 echo ""
-echo " To manage your server visit: http://$CIPI_SERVER_IP/login"
-echo " Default credentials are: panel@cipi.sh / Change-Me"
+echo " To manage your server visit: "
+echo " https://cipi.$CIPI_SERVER_IP.sslip.io/login"
+echo " Default credentials are: admin@cipi.sh / password"
 echo ""
 echo "***********************************************************"
 echo "          DO NOT LOSE AND KEEP SAFE THIS DATA"
