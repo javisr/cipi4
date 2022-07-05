@@ -3,9 +3,9 @@
 #################################################### CONFIGURATION ###
 USERPASSWORD=$(openssl rand -base64 32|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
 DATABASEPASSWORD=$(openssl rand -base64 24|sha256sum|base64|head -c 32| tr '[:upper:]' '[:lower:]')
-GITREPOSITORY=andreapollastri/cipi
+GITREPOSITORY=cipipanel/cipi4
 if [ -z "$1" ];
-    GITBRANCH=latest
+    GITBRANCH=main
 then
     GITBRANCH=$1
 fi
