@@ -32,13 +32,7 @@
                 </div>
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4">
-            <livewire:datatable
-                model="\App\Models\User"
-                name="users"
-                searchable="name, email"
-                include="id, name, email, created_at"
-                dates="created_at"
-            />
+                TO DO 
             </div>
         </div>
     </div>
