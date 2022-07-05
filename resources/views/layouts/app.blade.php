@@ -50,13 +50,16 @@
                 var tempCopyField = document.createElement("textarea");
                 document.body.appendChild(tempCopyField);
                 elementText = $('#'+element).html();
-                $('#'+element).html('Copied to clipboard!');
+                $('#'+element+'-copy').hide();
+                $('#'+element).html("<span style=\"color: gray;\">Copied to clipboard!<span>");
                 tempCopyField.value = elementText;
                 tempCopyField.select();
                 document.execCommand("copy");
                 document.body.removeChild(tempCopyField);
-                setTimeout(function(){}, 10000);
-                $('#'+element).html(elementText);
+                setTimeout(function() {
+                    $('#'+element).html(elementText);
+                    $('#'+element+'-copy').show();
+                }, 275);
             }
         </script>
     </body>

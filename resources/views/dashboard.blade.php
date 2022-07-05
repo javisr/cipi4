@@ -22,7 +22,7 @@
                             </div>
                             <div class="text-3xl">
                                 <div onclick="copyInClipboard('ip')" style="cursor: pointer;">
-                                    <span id="ip">123.123.123.123</span> <sup><i class="text-gray-200 text-sm fa-solid fa-clone"></i></sup>
+                                    <span id="ip">{{ config('cipi.ssh_host') }}</span> <sup id="ip-copy"><i class="text-gray-200 text-sm fa-solid fa-clone"></i>
                                 </div>
                             </div>
                         </span>
