@@ -361,6 +361,8 @@ sudo cat > "$NGINXCONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
+    listen 443 default_server;
+    listen [::]:443 default_server;
     server_name cipi-$SERVERIPWITHDASH.nip.io
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
