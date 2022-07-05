@@ -59,7 +59,7 @@
                 setTimeout(function() {
                     $('#'+element).html(elementText);
                     $('#'+element+'-copy').show();
-                }, 275);
+                }, 225);
             }
         </script>
     </body>

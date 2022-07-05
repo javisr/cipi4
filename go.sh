@@ -360,7 +360,6 @@ sudo cat > "$NGINXCONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name cipi-$SERVERIPWITHDASH.sslip.io;
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -387,6 +386,50 @@ server {
 }
 EOF
 sudo mkdir /etc/nginx/cipi/
+sudo systemctl restart nginx.service
+
+
+
+# PANEL VHOST
+clear
+echo "${bggreen}${black}${bold}"
+echo "Panel vhost..."
+echo "${reset}"
+sleep 1s
+
+PANELCONFIG=/etc/nginx/sites-available/panel.conf
+sudo touch $PANELCONFIG
+sudo cat > "$PANELCONFIG" <<EOF
+server {
+    listen 80;
+    listen [::]:80;
+    server_name cipi-$SERVERIPWITHDASH.sslip.io;
+    root /var/www/html/public;
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+    client_body_timeout 10s;
+    client_header_timeout 10s;
+    client_max_body_size 256M;
+    index index.html index.php;
+    charset utf-8;
+    server_tokens off;
+    location / {
+        try_files   \$uri     \$uri/  /index.php?\$query_string;
+    }
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+    error_page 404 /index.php;
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    }
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+EOF
+sudo ln -s $PANELCONFIG /etc/nginx/sites-enabled/panel.conf
 sudo systemctl restart nginx.service
 
 
