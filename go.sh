@@ -351,7 +351,7 @@ echo "Default vhost..."
 echo "${reset}"
 sleep 1s
 
-NGINXCONFIG=/etc/nginx/sites-available/default.conf
+NGINXCONFIG=/etc/nginx/sites-available/default
 if test -f "$NGINXCONFIG"; then
     sudo unlink $NGINXCONFIG
 fi
@@ -490,8 +490,7 @@ CREATE DATABASE IF NOT EXISTS cipi;
 EOF
 clear
 sudo rm -rf /var/www/html
-cd /var/www && git clone https://github.com/
-GITREPOSITORY.git html
+cd /var/www && git clone https://github.com/$GITREPOSITORY.git html
 cd /var/www/html && git pull
 cd /var/www/html && git checkout $GITBRANCH
 cd /var/www/html && git pull
