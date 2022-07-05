@@ -360,9 +360,7 @@ sudo cat > "$NGINXCONFIG" <<EOF
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    listen 443 default_server;
-    listen [::]:443 default_server;
-    server_name cipi-$SERVERIPWITHDASH.sslip.io
+    server_name cipi-$SERVERIPWITHDASH.sslip.io;
     root /var/www/html/public;
     add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
@@ -614,8 +612,11 @@ echo " MySQL root user: cipi"
 echo " MySQL root pass: $DATABASEPASSWORD"
 echo ""
 echo " To manage your server visit: "
-echo " https://cipi-$SERVERIPWITHDASH.sslip.io/login"
+echo " https://cipi-$SERVERIPWITHDASH.sslip.io/login" 
 echo " Default credentials are: admin@cipi.sh / password"
+echo ""
+echo " If panel is not available via HTTPS, try to run:"
+echo " certbot --nginx -d cipi-$SERVERIPWITHDASH.sslip.io "
 echo ""
 echo "***********************************************************"
 echo "          DO NOT LOSE AND KEEP SAFE THIS DATA"
