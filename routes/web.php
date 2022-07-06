@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('/sites/edit/{id}', [SiteController::class, 'update']);
     Route::get('/sites/delete/{id}', [SiteController::class, 'destroy']);
 
+    Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
 
     Route::get('/settings', function () {
