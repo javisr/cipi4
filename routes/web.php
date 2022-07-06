@@ -18,7 +18,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
-
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -33,9 +32,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/sites/edit/{id}', [\App\Http\Controllers\SiteController::class, 'show']);
     Route::post('/sites/edit/{id}', [\App\Http\Controllers\SiteController::class, 'update']);
     Route::get('/sites/delete/{id}', [\App\Http\Controllers\SiteController::class, 'destroy']);
-    
+
     Route::get('/settings', function () {
         return view('settings');
     })->name('settings');
-
 });
