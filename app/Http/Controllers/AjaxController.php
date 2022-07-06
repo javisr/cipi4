@@ -8,9 +8,9 @@ use phpseclib3\Net\SSH2;
 
 class AjaxController extends Controller
 {
-    public function checkUniqueDomain($domain, $site=null)
+    public function checkUniqueDomain($domain, $site = null)
     {
-        if($site &&
+        if ($site &&
             (
                 Site::where('domain', $domain)->whereNot('site', $site)->first() ||
                 Alias::where('domain', $domain)->first()
@@ -23,7 +23,7 @@ class AjaxController extends Controller
             ], 419);
         }
 
-        if(!$site &&
+        if (! $site &&
             (
                 Site::where('domain', $domain)->first() ||
                 Alias::where('domain', $domain)->first()
@@ -32,14 +32,14 @@ class AjaxController extends Controller
             return response()->json([
                 'domain' => $domain,
                 'site' => $site,
-                'checkUniqueDomain' => 'KO'
+                'checkUniqueDomain' => 'KO',
             ], 419);
         }
 
         return response()->json([
             'domain' => $domain,
             'site' => $site,
-            'checkUniqueDomain' => 'OK'
+            'checkUniqueDomain' => 'OK',
         ]);
     }
 
