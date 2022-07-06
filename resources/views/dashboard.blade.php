@@ -33,8 +33,8 @@
                             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">CPU</div>
                         </div>
                         <div class="ml-12">
-                            <div class="mt-2 text-5xl text-gray-500">
-                                100%
+                            <div class="mt-2 text-5xl text-gray-500" id="cpu">
+                                <i class="fas fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -45,8 +45,8 @@
                             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">RAM</div>
                         </div>
                         <div class="ml-12">
-                            <div class="mt-2 text-5xl text-gray-500">
-                                100%
+                            <div class="mt-2 text-5xl text-gray-500" id="ram">
+                                <i class="fas fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -57,8 +57,8 @@
                             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">HDD</div>
                         </div>
                         <div class="ml-12">
-                            <div class="mt-2 text-5xl text-gray-500">
-                                100%
+                            <div class="mt-2 text-5xl text-gray-500" id="hdd">
+                                <i class="fas fa-spinner fa-spin"></i>
                             </div>
                         </div>
                     </div>
@@ -67,4 +67,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function getServerStatus() {
+            $.ajax({
+                type: 'GET',
+                url: '/ajax/checkserverstatus',
+                beforeSend: function() {
+                    $('#ram').html('<i class="fas fa-spinner fa-spin"></i>');
+                    $('#cpu').html('<i class="fas fa-spinner fa-spin"></i>');
+                    $('#hdd').html('<i class="fas fa-spinner fa-spin"></i>');
+                },
+                success: function(data) {
+                    $('#ram').html(data.ram+'%');
+                    $('#cpu').html(data.cpu+'%');
+                    $('#hdd').html(data.hdd+'%');
+                }
+            });
+        }
+
+        getServerStatus();
+        setInterval(getServerStatus, 12500);
+    </script>
+
+
 </x-app-layout>
