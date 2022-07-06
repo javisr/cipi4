@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('aliases', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('site_id');
+            $table->string('domain')->unique();
             $table->timestamps();
         });
     }

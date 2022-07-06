@@ -3,30 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Site;
+use App\Models\Alias;
 
 class AjaxController extends Controller
 {
-    public function checkUniqueDomain($domain, $site_id=null)
+    public function checkUniqueDomain($domain, $site=null)
     {
-        if($site_id && 
+        if($site && 
             (
-                Site::where('domain', $domain)->whereNot('site_id', $site_id)->first() ||
+                Site::where('domain', $domain)->whereNot('site', $site)->first() ||
                 Alias::where('domain', $domain)->first()
             )
         ) {
-            return true;
+            return response()->json([
+                'domain' => $domain,
+                'site' => $site,
+                'checkUniqueDomain' => 'KO',
+            ], 419);
         }
 
-        if(!$site_id && 
+        if(!$site && 
             (
                 Site::where('domain', $domain)->first() ||
                 Alias::where('domain', $domain)->first()
             )
         ) {
-            return true;
+            return response()->json([
+                'domain' => $domain,
+                'site' => $site,
+                'checkUniqueDomain' => 'KO'
+            ], 419);
         }
         
-        return false;
+        return response()->json([
+            'domain' => $domain,
+            'site' => $site,
+            'checkUniqueDomain' => 'OK'
+        ]);
     }
 
 }
