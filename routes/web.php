@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteController;
+use App\Http\Controllers\AjaxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -26,14 +29,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         return view('sites');
     })->name('sites');
 
-    Route::get('/sites/index', [\App\Http\Controllers\SiteController::class, 'index']);
-    Route::get('/sites/create', [\App\Http\Controllers\SiteController::class, 'create']);
-    Route::post('/sites/create', [\App\Http\Controllers\SiteController::class, 'store']);
-    Route::get('/sites/edit/{id}', [\App\Http\Controllers\SiteController::class, 'show']);
-    Route::post('/sites/edit/{id}', [\App\Http\Controllers\SiteController::class, 'update']);
-    Route::get('/sites/delete/{id}', [\App\Http\Controllers\SiteController::class, 'destroy']);
+    Route::get('/sites/index', [SiteController::class, 'index']);
+    Route::get('/sites/create', [SiteController::class, 'create']);
+    Route::post('/sites/create', [SiteController::class, 'store']);
+    Route::get('/sites/edit/{id}', [SiteController::class, 'show']);
+    Route::post('/sites/edit/{id}', [SiteController::class, 'update']);
+    Route::get('/sites/delete/{id}', [SiteController::class, 'destroy']);
+
+    Route::get('/ajax/checkuniquedomain/{domain}/{?site_id}', [AjaxController::class, 'checkUniqueDomain']);
 
     Route::get('/settings', function () {
         return view('settings');
     })->name('settings');
+
+
 });
