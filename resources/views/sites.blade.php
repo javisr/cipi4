@@ -22,14 +22,14 @@
                         </div>
                         <div class="text-3xl">
                             <div style="cursor: pointer;">
-                                69
+                                {{ \App\Models\Site::count() }}
                             </div>
                         </div>
                     </span>
                 </div>
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 pb-8">
-                
+
             <table id="example" class="display" style="width:100%">
         <thead>
             <tr>

@@ -557,11 +557,12 @@ rpl -i -w "DB_PASSWORD=changeme" "DB_PASSWORD=$DATABASEPASSWORD" /var/www/html/.
 rpl -i -w "CIPI_SSH_SERVER_HOST=changeme" "CIPI_SSH_SERVER_HOST=$SERVERIP" /var/www/html/.env
 rpl -i -w "CIPI_SSH_SERVER_PASS=changeme" "CIPI_SSH_SERVER_PASS=$USERPASSWORD" /var/www/html/.env
 rpl -i -w "CIPI_SQL_DBROOT_PASS=changeme" "CIPI_SQL_DBROOT_PASS=$DATABASEPASSWORD" /var/www/html/.env
+cd /var/www/html && php artisan config:clear
+cd /var/www/html && php artisan migrate --seed --force
 cd /var/www/html && php artisan storage:link
-cd /var/www/html && php artisan view:cache
 cd /var/www/html && php artisan config:cache
 cd /var/www/html && php artisan route:cache
-cd /var/www/html && php artisan migrate --seed --force
+cd /var/www/html && php artisan view:cache
 EOF
 su -c "sh $PANELSETUP" cipi
 sudo unlink $PANELSETUP
@@ -656,7 +657,7 @@ echo " MySQL root user: cipi"
 echo " MySQL root pass: $DATABASEPASSWORD"
 echo ""
 echo " To manage your server visit: "
-echo " https://cipi-$SERVERIPWITHDASH.sslip.io/login" 
+echo " https://cipi-$SERVERIPWITHDASH.sslip.io/login"
 echo " Default credentials are: admin@cipi.sh / password"
 echo ""
 echo " If panel is not available via HTTPS, try to run:"
