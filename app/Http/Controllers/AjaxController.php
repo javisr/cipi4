@@ -53,7 +53,7 @@ class AjaxController extends Controller
             $ssh->exec('exit');
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => __('Something went wrong!')
+                'message' => __('Something went wrong!'),
             ], 503);
         }
 
@@ -64,7 +64,7 @@ class AjaxController extends Controller
         return response()->json([
             'cpu' => $status[0],
             'ram' => $status[1],
-            'hdd' => $status[2]
+            'hdd' => $status[2],
         ]);
     }
 }
