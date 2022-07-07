@@ -29,7 +29,7 @@
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                             <label for="domain" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Root Domain') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
-                            <input type="text" name="domain" id="domain" autocomplete="OFF" autofocus class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="domain" id="domain" autocomplete="OFF" autofocus placeholder="domain.com" class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
                             </div>
                         </div>
                         <div class="rounded-md bg-red-50 p-4 hidden" id="domainError">
@@ -87,8 +87,6 @@
                         </div>
                     </div>
                 </form>
-
-                @include('sites._jslibs')
 
                 <script>
                     function createSite() {

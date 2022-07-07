@@ -13,11 +13,11 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.6/css/responsive.dataTables.min.css" />
 
         @livewireStyles
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
-        
+
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <script src="{{ mix('js/app.js') }}" defer></script>
 
@@ -51,8 +51,8 @@
             background-color: #000;
         }
         </style>
-        
-        
+
+
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
@@ -94,6 +94,28 @@
                     $('#'+element).html(elementText);
                     $('#'+element+'-copy').show();
                 }, 225);
+            }
+
+            function isValidURL(string) {
+                var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+                return (res !== null)
+            };
+
+            function isValidPath(string) {
+                if(string === '') {
+                    return true;
+                }
+
+                if(string.includes('//')) {
+                    return null;
+                }
+
+                if (string.substr(-1) === '/') {
+                    return null;
+                }
+
+                var res = string.match(/^[a-z0-9\/\-\_]+$/g);
+                return (res !== null)
             }
         </script>
     </body>

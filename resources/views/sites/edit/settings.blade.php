@@ -26,10 +26,23 @@
 
                     <div class="space-y-8  sm:space-y-5">
 
-                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
+                        <div class="mt-5 border-b border-gray-200">
+                            <dl>
+                                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-700"> {{ __('Preview URL') }}</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <div onclick="copyInClipboard('preview')" style="cursor: pointer;">
+                                            <span id="preview">https://{{ crc32($username) }}-{{ Str::replace('.', '-', config('cipi.ssh_host')) }}.sslip.io</span> <sup id="preview-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i>
+                                        </div>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <div class="sm:grid sm:grid-cols-3 sm:gap-4">
                             <label for="domain" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Root Domain') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
-                            <input type="text" name="domain" id="domain" autocomplete="OFF" autofocus class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="domain" id="domain" autocomplete="OFF" placeholder="domain.com" value="{{ $domain }}" class="block max-w-lg w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300 rounded-md">
                             </div>
                         </div>
                         <div class="rounded-md bg-red-50 p-4 hidden" id="domainError">
@@ -87,8 +100,6 @@
                         </div>
                     </div>
                 </form>
-
-                @include('sites._jslibs')
 
                 <script>
                     function editSite() {

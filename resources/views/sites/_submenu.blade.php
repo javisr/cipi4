@@ -2,15 +2,15 @@
     <div class="sm:hidden">
         <label for="tabs" class="sr-only">Select a tab</label>
         <select id="tabs" name="tabs" class="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md">
-            <option value="/sites/edit/{{ $site }}/settings" @if(Request::is('*/settings')) selected @endif>Setting</option>
-            <option value="/sites/edit/{{ $site }}/aliases" @if(Request::is('*/aliases')) selected @endif>Aliases</option>
-            <option value="/sites/edit/{{ $site }}/ssl" @if(Request::is('*/ssl')) selected @endif>SSL</option>
-            <option value="/sites/edit/{{ $site }}/deployment" @if(Request::is('*/deployment')) selected @endif>Deployment</option>
-            <option value="/sites/edit/{{ $site }}/queue" @if(Request::is('*/queue')) selected @endif>Queue</option>
-            <option value="/sites/edit/{{ $site }}/enviroment" @if(Request::is('*/enviroment')) selected @endif>Environment</option>
-            <option value="/sites/edit/{{ $site }}/packages" @if(Request::is('*/packages')) selected @endif>Packages</option>
-            <option value="/sites/edit/{{ $site }}/nginx" @if(Request::is('*/nginx')) selected @endif>Nginx</option>
-            <option value="/sites/edit/{{ $site }}/destroy" @if(Request::is('*/destroy')) selected @endif>Destroy</option>
+            <option value="/sites/edit/{{ $site }}/settings" @if(Request::is('*/settings')) selected @endif>{{ __('Setting') }}</option>
+            <option value="/sites/edit/{{ $site }}/aliases" @if(Request::is('*/aliases')) selected @endif>{{ __('Aliases') }}</option>
+            <option value="/sites/edit/{{ $site }}/ssl" @if(Request::is('*/ssl')) selected @endif>{{ __('SSL') }}</option>
+            <option value="/sites/edit/{{ $site }}/deployment" @if(Request::is('*/deployment')) selected @endif>{{ __('Deployment') }}</option>
+            <option value="/sites/edit/{{ $site }}/queue" @if(Request::is('*/queue')) selected @endif>{{ __('Queue') }}</option>
+            <option value="/sites/edit/{{ $site }}/enviroment" @if(Request::is('*/enviroment')) selected @endif>{{ __('Environment') }}</option>
+            <option value="/sites/edit/{{ $site }}/packages" @if(Request::is('*/packages')) selected @endif>{{ __('Packages') }}</option>
+            <option value="/sites/edit/{{ $site }}/nginx" @if(Request::is('*/nginx')) selected @endif>{{ __('Nginx') }}</option>
+            <option value="/sites/edit/{{ $site }}/destroy" @if(Request::is('*/destroy')) selected @endif>{{ __('Destroy') }}</option>
         </select>
         <script>
             $('#tabs').change(function() {
@@ -23,12 +23,12 @@
             <nav class="-mb-px flex" aria-label="Tabs">
 
                 <a href="/sites/edit/{{ $site }}/settings"
-                    @if(Request::is('*/settings'))
+                    @if(Request::is('*/settings') || Request::is('*/'.$site))
                         class="border-indigo-500 text-indigo-600 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm" aria-current="page"
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Settings </a>
+                > {{ __('Settings') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/aliases"
                     @if(Request::is('*/aliases'))
@@ -36,7 +36,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Aliases </a>
+                > {{ __('Aliases') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/ssl"
                     @if(Request::is('*/ssl'))
@@ -44,7 +44,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > SSL </a>
+                > {{ __('SSL') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/deployment"
                     @if(Request::is('*/deployment'))
@@ -52,7 +52,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Deployment </a>
+                > {{ __('Deployment') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/queue"
                     @if(Request::is('*/queue'))
@@ -60,7 +60,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Queue </a>
+                > {{ __('Queue') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/enviroment"
                     @if(Request::is('*/enviroment'))
@@ -68,7 +68,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Environment </a>
+                > {{ __('Environment') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/packages"
                     @if(Request::is('*/packages'))
@@ -76,7 +76,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Packages </a>
+                > {{ __('Packages') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/nginx"
                     @if(Request::is('*/nginx'))
@@ -84,7 +84,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Nginx </a>
+                > {{ __('Nginx') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/destroy"
                     @if(Request::is('*/destroy'))
@@ -92,7 +92,7 @@
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > Destroy </a>
+                > {{ __('Destroy') }} </a>
             </nav>
         </div>
     </div>
