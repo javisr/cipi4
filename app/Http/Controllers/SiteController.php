@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -23,7 +25,9 @@ class SiteController extends Controller
      */
     public function create()
     {
-        //
+        return view('sites.create', [
+            'username' => config('cipi.username_prefix').uniqid()
+        ]);
     }
 
     /**
@@ -34,7 +38,17 @@ class SiteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $site = Site::create([
+            'site' => Str::uuid(),
+            'username' => $request->username,
+            'domain' => $request->domain,
+            'path' => $request->path,
+            'php' => $request->php
+        ]);
+
+        //TODO - Job Create Site
+
+        return redirect('/sites/edit/'.$site->site);
     }
 
     /**
@@ -43,7 +57,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($site)
     {
         //
     }
@@ -54,7 +68,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($site)
     {
         //
     }
@@ -66,7 +80,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $site)
     {
         //
     }
@@ -77,7 +91,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($site)
     {
         //
     }

@@ -20,25 +20,20 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 
-    Route::get('/sites', function () {
-        return view('sites');
-    })->name('sites');
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/sites', 'sites.index')->name('sites');
+    Route::view('/sites/create', 'sites.create');
+    Route::view('/settings', 'settings')->name('settings');
 
     Route::get('/sites/index', [SiteController::class, 'index']);
     Route::get('/sites/create', [SiteController::class, 'create']);
     Route::post('/sites/create', [SiteController::class, 'store']);
-    Route::get('/sites/edit/{id}', [SiteController::class, 'show']);
-    Route::post('/sites/edit/{id}', [SiteController::class, 'update']);
-    Route::get('/sites/delete/{id}', [SiteController::class, 'destroy']);
+    Route::get('/sites/edit/{site}', [SiteController::class, 'edit']);
+    Route::post('/sites/edit/{site}', [SiteController::class, 'update']);
+    Route::post('/sites/delete/{site}', [SiteController::class, 'destroy']);
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
 
-    Route::get('/settings', function () {
-        return view('settings');
-    })->name('settings');
 });

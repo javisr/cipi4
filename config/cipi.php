@@ -7,4 +7,5 @@ return [
     'ssh_pass' => env('CIPI_SSH_SERVER_PASS'),
     'db_user' => env('CIPI_SQL_DBROOT_USER', 'cipi'),
     'db_pass' => env('CIPI_SQL_DBROOT_PASS'),
+    'username_prefix' => env('CIPI_USERNAME_PREFIX', 'cp'),
 ];

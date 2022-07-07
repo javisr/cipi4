@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Site extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'site',
+        'domain',
+        'php',
+        'username',
+        'path'
+    ];
+
 }

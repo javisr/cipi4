@@ -5,9 +5,11 @@
                 <h3 class="py-2 text-2xl leading-6 font-medium text-gray-900 font-black">{{ __('Sites') }}</h3>
             </div>
             <div class="ml-4 mt-2 flex-shrink-0">
-                <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    {{ __('Create') }}
-                </button>
+                <a href="/sites/create">
+                    <button type="button" class="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        {{ __('Create') }}
+                    </button>
+                </a>
             </div>
         </div>
     </x-slot>
@@ -34,7 +36,7 @@
         <thead>
             <tr>
                 <th>Domain</th>
-                <th>User</th>
+                <th>Username</th>
                 <th>Aliases</th>
                 <th>Path</th>
                 <th>PHP</th>

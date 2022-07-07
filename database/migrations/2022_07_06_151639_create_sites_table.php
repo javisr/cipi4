@@ -15,16 +15,13 @@ return new class () extends Migration {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->uuid('site');
-            $table->string('user')->unique();
+            $table->string('username')->unique();
             $table->string('domain')->unique();
             $table->string('path')->nullable();
             $table->string('php')->defualt('8.1');
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
-            $table->text('env')->nullable();
-            $table->text('auth')->nullable();
             $table->text('deploy')->nullable();
-            $table->text('nginx')->nullable();
             $table->text('supervisord')->nullable();
             $table->timestamps();
         });
