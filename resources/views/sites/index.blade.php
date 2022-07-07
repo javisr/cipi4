@@ -36,6 +36,7 @@
                 <thead>
                     <tr>
                         <th>Domain</th>
+                        <th>Aliases</th>
                         <th>Username</th>
                         <th>Path</th>
                         <th>PHP</th>
@@ -46,15 +47,25 @@
             <script>
             $(document).ready(function () {
                 $('#sites').DataTable({
+                    responsive: true,
                     processing: true,
                     serverSide: true,
                     ajax: '/sites/index',
                     columns: [
                         { data: "domain" },
+                        { data: "aliases_count" },
                         { data: "username" },
                         { data: "path" },
                         { data: "php" }
-                    ]
+                    ],
+                    columnDefs: [
+                        {
+                            'targets': 0,
+                            'render': function ( data, type, row, meta ) {
+                                return '<a href="/sites/edit/'+row["site"]+'"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
+                            }
+                        }
+                    ],
                 });
             });
             </script>

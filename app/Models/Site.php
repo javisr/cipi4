@@ -16,4 +16,10 @@ class Site extends Model
         'username',
         'path',
     ];
+
+    public function aliases()
+    {
+        return $this->hasMany(Alias::class);
+    }
+
 }

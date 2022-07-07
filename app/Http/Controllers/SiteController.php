@@ -5,9 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class SiteController extends Controller
 {
+    private function phpVersions()
+    {
+        return ['8.1'];
+    }
+
+    private function siteSettingsValidation()
+    {
+        return [
+            'username' => 'required|unique:sites',
+            'domain' => 'required|unique:sites',
+            'path' => 'required',
+            'php' => [new Enum($this->phpVersions())],
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +36,10 @@ class SiteController extends Controller
                 'domain',
                 'username',
                 'path',
-                'php'
-            )->get()
+                'php',
+                'site'
+            )->withCount('aliases')
+             ->get()
         )->toJson();
     }
 
@@ -45,11 +63,13 @@ class SiteController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate($this->siteSettingsValidation());
+
         $site = Site::create([
             'site' => Str::uuid(),
             'username' => $request->username,
-            'domain' => $request->domain,
-            'path' => $request->path,
+            'domain' => Str::lower($request->domain),
+            'path' => Str::lower($request->path),
             'php' => $request->php,
         ]);
 
