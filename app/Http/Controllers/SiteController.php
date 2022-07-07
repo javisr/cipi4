@@ -9,27 +9,26 @@ use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
-
     private function siteSettingsValidation()
     {
         return [
             'username' => [
                 'required',
-                'unique:sites'
+                'unique:sites',
             ],
             'domain' => [
                 'required',
-                'unique:sites'
+                'unique:sites',
             ],
             'path' => [
-                'required'
+                'required',
             ],
             'php' => [
                 'required',
                 Rule::in([
-                    '8.1'
-                ])
-            ]
+                    '8.1',
+                ]),
+            ],
         ];
     }
 
