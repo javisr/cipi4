@@ -14,7 +14,6 @@ class Site extends Model
         'domain',
         'php',
         'username',
-        'path'
+        'path',
     ];
-
 }
