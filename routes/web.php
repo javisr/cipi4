@@ -20,7 +20,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
-
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/sites', 'sites.index')->name('sites');
     Route::view('/sites/create', 'sites.create');
@@ -35,5 +34,4 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
-
 });

@@ -32,7 +32,7 @@ class SiteController extends Controller
     public function create()
     {
         return view('sites.create', [
-            'username' => config('cipi.username_prefix').uniqid()
+            'username' => config('cipi.username_prefix').uniqid(),
         ]);
     }
 
@@ -49,7 +49,7 @@ class SiteController extends Controller
             'username' => $request->username,
             'domain' => $request->domain,
             'path' => $request->path,
-            'php' => $request->php
+            'php' => $request->php,
         ]);
 
         //TODO - Job Create Site
