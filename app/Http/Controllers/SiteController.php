@@ -5,22 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
-    private function phpVersions()
-    {
-        return ['8.1'];
-    }
 
     private function siteSettingsValidation()
     {
         return [
-            'username' => 'required|unique:sites',
-            'domain' => 'required|unique:sites',
-            'path' => 'required',
-            'php' => [new Enum($this->phpVersions())],
+            'username' => [
+                'required',
+                'unique:sites'
+            ],
+            'domain' => [
+                'required',
+                'unique:sites'
+            ],
+            'path' => [
+                'required'
+            ],
+            'php' => [
+                'required',
+                Rule::in([
+                    '8.1'
+                ])
+            ]
         ];
     }
 
@@ -73,7 +82,7 @@ class SiteController extends Controller
             'php' => $request->php,
         ]);
 
-        //TODO - Job Create Site
+        // TODO - Job Create Site
 
         return redirect('/sites/edit/'.$site->site);
     }
