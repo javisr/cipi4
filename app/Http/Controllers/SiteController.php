@@ -15,12 +15,13 @@ class SiteController extends Controller
      */
     public function index()
     {
-        return datatables(Site::select(
+        return datatables(
+            Site::select(
             'domain',
             'username',
             'path',
             'php'
-            )->get()
+        )->get()
         )->toJson();
     }
 
