@@ -32,40 +32,32 @@
             </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 pb-8">
 
-            <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Domain</th>
-                <th>Username</th>
-                <th>Aliases</th>
-                <th>Path</th>
-                <th>PHP</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <a href="/sites/edit/123" class="font-bold text-indigo-700">
-                        prova.com
-                    </a>
-                </td>
-                <td>abcdef123</td>
-                <td>10</td>
-                <td>/public</td>
-                <td>8.1</td>
-            </tr>
-        </tbody>
-    </table>
+            <table id="sites" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Username</th>
+                        <th>Path</th>
+                        <th>PHP</th>
+                    </tr>
+                </thead>
+            </table>
 
-    <script>
-    $(document).ready(function () {
-        $('#example').DataTable({
-            responsive: true
-        });
-    });
-    </script>
-
-
+            <script>
+            $(document).ready(function () {
+                $('#sites').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: '/sites/index',
+                    columns: [
+                        { data: "domain" },
+                        { data: "username" },
+                        { data: "path" },
+                        { data: "php" }
+                    ]
+                });
+            });
+            </script>
 
             </div>
         </div>
