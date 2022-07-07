@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
             <div class="ml-4 mt-2">
-                <h3 class="py-2 text-2xl leading-6 font-medium text-gray-900 font-black">{{ __('Create Site') }}</h3>
+                <h3 class="py-2 text-2xl leading-6 font-medium text-gray-900 font-black">{{ __('Edit Site') }}</h3>
             </div>
             <div class="ml-4 mt-2 flex-shrink-0">
                 <a href="/sites">
@@ -19,9 +19,9 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
-                <form class="space-y-8" method="post" action="/sites/create" id="createSite">
+                @include('sites._submenu')
 
-                    <input type="hidden" name="username" value="{{ $username }}">
+                <form class="space-y-8" method="post" action="/sites/edit/{{ request()->site }}/settings" id="editSite">
                     @csrf
 
                     <div class="space-y-8  sm:space-y-5">
@@ -50,7 +50,7 @@
                             <label for="path" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Web Directory') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <div class="max-w-lg flex rounded-md shadow-sm">
-                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> /home/{{ $username }}/www/ </span>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> /home/{{ $username }}/www </span>
                                 <input type="text" name="path" id="path" autocomplete="OFF" value="public" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                             </div>
                             </div>
@@ -81,8 +81,8 @@
 
                     <div class="pt-5">
                         <div class="flex justify-end">
-                            <span id="createSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{ __('Create') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="createSiteLoading"></i>
+                            <span id="editSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                                {{ __('Update') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="editSiteLoading"></i>
                             </span>
                         </div>
                     </div>
@@ -91,21 +91,21 @@
                 @include('sites._jslibs')
 
                 <script>
-                    function createSite() {
+                    function editSite() {
                         $.ajax({
                             type: 'GET',
-                            url: '/ajax/checkuniquedomain/'+$('#domain').val(),
+                            url: '/ajax/checkuniquedomain/'+$('#domain').val()+'/{{ $site }}',
                             beforeSend: function() {
                                 $('#domainError').hide();
-                                $('#createSiteLoading').show();
+                                $('#editSiteLoading').show();
                             },
                             success: function(data) {
-                                $('#createSite').submit();
+                                $('#editSite').submit();
                             },
                             error: function(xhr) {
                                 $('#domainErrorMessagge').html('{{ __("The domain has already been taken on this server.") }}');
                                 $('#domainError').show();
-                                $('#createSiteLoading').hide();
+                                $('#editSiteLoading').hide();
                             }
                         });
                     }
@@ -128,14 +128,14 @@
                         }
                     });
 
-                    $("#createSiteSubmit").click(function(event) {
+                    $("#editSiteSubmit").click(function(event) {
                         if(!$('#domain').val()) {
                             $('#domainErrorMessagge').html('{{ __("The site domain is required.") }}');
                             $('#domainError').show();
                         }
 
                         if(isValidURL($('#domain').val()) && isValidPath($('#path').val())) {
-                            createSite();
+                            editSite();
                         }
                     });
                 </script>

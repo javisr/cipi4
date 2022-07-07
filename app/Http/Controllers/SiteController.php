@@ -75,9 +75,24 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($site)
+    public function edit($site, $section='settings')
     {
-        //
+        $site = Site::where('site', $site)->first();
+
+        switch ($section) {
+            case 'aliases':
+                return view('sites.edit.settings', $site);
+                break;
+
+            case 'deployment':
+                return view('sites.edit.settings', $site);
+                break;
+
+            default:
+                return view('sites.edit.settings', $site);
+                break;
+        }
+
     }
 
     /**

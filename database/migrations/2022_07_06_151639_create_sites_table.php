@@ -22,6 +22,9 @@ return new class () extends Migration {
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
             $table->text('deploy')->nullable();
+            $table->text('nginx')->nullable();
+            $table->text('auth')->nullable();
+            $table->text('env')->nullable();
             $table->text('supervisord')->nullable();
             $table->timestamps();
         });

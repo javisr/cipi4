@@ -28,8 +28,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/sites/index', [SiteController::class, 'index']);
     Route::get('/sites/create', [SiteController::class, 'create']);
     Route::post('/sites/create', [SiteController::class, 'store']);
-    Route::get('/sites/edit/{site}', [SiteController::class, 'edit']);
-    Route::post('/sites/edit/{site}', [SiteController::class, 'update']);
+    Route::get('/sites/edit/{site}/{section?}', [SiteController::class, 'edit']);
+    Route::post('/sites/edit/{site}/{section?}', [SiteController::class, 'update']);
     Route::post('/sites/delete/{site}', [SiteController::class, 'destroy']);
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
