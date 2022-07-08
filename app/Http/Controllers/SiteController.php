@@ -189,7 +189,7 @@ class SiteController extends Controller
 
         return redirect('/sites')->with([
             'siteDeleted' => true,
-            'domain' => $domain
+            'domain' => $domain,
         ]);
     }
 }
