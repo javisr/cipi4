@@ -5,7 +5,7 @@
             <option value="/sites/edit/{{ $site }}/settings" @if(Request::is('*/settings')) selected @endif>{{ __('Setting') }}</option>
             <option value="/sites/edit/{{ $site }}/aliases" @if(Request::is('*/aliases')) selected @endif>{{ __('Aliases') }}</option>
             <option value="/sites/edit/{{ $site }}/ssl" @if(Request::is('*/ssl')) selected @endif>{{ __('SSL') }}</option>
-            <option value="/sites/edit/{{ $site }}/deployment" @if(Request::is('*/deployment')) selected @endif>{{ __('Deployment') }}</option>
+            <option value="/sites/edit/{{ $site }}/repository" @if(Request::is('*/repository')) selected @endif>{{ __('Repository') }}</option>
             <option value="/sites/edit/{{ $site }}/queue" @if(Request::is('*/queue')) selected @endif>{{ __('Queue') }}</option>
             <option value="/sites/edit/{{ $site }}/enviroment" @if(Request::is('*/enviroment')) selected @endif>{{ __('Environment') }}</option>
             <option value="/sites/edit/{{ $site }}/packages" @if(Request::is('*/packages')) selected @endif>{{ __('Packages') }}</option>
@@ -46,13 +46,13 @@
                     @endif
                 > {{ __('SSL') }} </a>
 
-                <a href="/sites/edit/{{ $site }}/deployment"
-                    @if(Request::is('*/deployment'))
+                <a href="/sites/edit/{{ $site }}/repository"
+                    @if(Request::is('*/repository'))
                         class="border-indigo-500 text-indigo-600 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm" aria-current="page"
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > {{ __('Deployment') }} </a>
+                > {{ __('Repository') }} </a>
 
                 <a href="/sites/edit/{{ $site }}/queue"
                     @if(Request::is('*/queue'))

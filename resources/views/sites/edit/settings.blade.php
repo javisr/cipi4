@@ -29,14 +29,14 @@
                         </div>
                         <div class="ml-3">
                             <h3 class="text-sm text-green-800 font-bold">Site settings have been updated! </h3>
-                            <div class="mt-4">
-                                <div class="-mx-2 -my-1.5 flex">
-                                    <button id="siteUpdatedDismiss" Createtype="button" class="bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">Dismiss</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <script>
+                    setTimeout(() => {
+                        $("#siteUpdated").hide(500);
+                    }, 4000);
+                </script>
                 @endif
 
                 @if (session('siteCreated'))
@@ -89,6 +89,11 @@ DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block tex
                         </div>
                     </div>
                 </div>
+                <script>
+                    $("#siteCreatedDismiss").click(function() {
+                        $("#siteCreated").hide();
+                    });
+                </script>
                 @endif
 
                 @include('sites._submenu')
@@ -220,14 +225,6 @@ DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block tex
                         if(isValidURL($('#domain').val()) && isValidPath($('#path').val())) {
                             editSite();
                         }
-                    });
-
-                    $("#siteCreatedDismiss").click(function() {
-                        $("#siteCreated").hide();
-                    });
-
-                    $("#siteUpdatedDismiss").click(function() {
-                        $("#siteUpdated").hide();
                     });
                 </script>
 

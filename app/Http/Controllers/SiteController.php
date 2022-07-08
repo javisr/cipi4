@@ -179,6 +179,17 @@ class SiteController extends Controller
      */
     public function destroy($site)
     {
-        //
+        $site = Site::where('site', $site)->firstOrFail();
+
+        $domain = $site->domain;
+
+        // TODO - Job Site Delete
+
+        $site->delete();
+
+        return redirect('/sites')->with([
+            'siteDeleted' => true,
+            'domain' => $domain
+        ]);
     }
 }

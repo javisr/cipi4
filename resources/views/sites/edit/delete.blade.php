@@ -48,13 +48,19 @@
 
                     <div class="pt-1 pb-5">
                         <div class="flex justify-center">
-                            <span id="editSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
+                            <button type="submit" id="deleteSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
                                 {{ __('Delete') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="editSiteLoading"></i>
-                            </span>
+                            </button>
                         </div>
                     </div>
 
                 </form>
+
+                <script>
+                    $('#deleteSite').submit(function() {
+                        return ($('#delete').val() == '{{ $domain }}')
+                    });
+                </script>
 
             </div>
         </div>
