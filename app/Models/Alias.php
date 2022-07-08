@@ -15,7 +15,7 @@ class Alias extends Model
     ];
 
     protected $eagerLoaded = [
-        'site'
+        'site',
     ];
 
     public function site()

@@ -10,14 +10,13 @@ use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
-
     private function AliasValidation()
     {
         return [
             'domain' => [
                 'required',
                 'unique:aliases',
-            ]
+            ],
         ];
     }
 
@@ -177,14 +176,14 @@ class SiteController extends Controller
 
                 Alias::create([
                     'domain' => $request->domain,
-                    'site_id' => $site->id
+                    'site_id' => $site->id,
                 ]);
 
                 // TODO - Job Create Alias (with info)
 
                 return redirect('/sites/'.$site->site.'/edit/aliases')->with([
                     'aliasCreated' => true,
-                    'domain' => $request->domain
+                    'domain' => $request->domain,
                 ]);
 
                 break;
