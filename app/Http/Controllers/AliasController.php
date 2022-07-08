@@ -14,7 +14,7 @@ class AliasController extends Controller
             'domain' => [
                 'required',
                 'unique:aliases',
-            ]
+            ],
         ];
     }
 
@@ -52,14 +52,14 @@ class AliasController extends Controller
 
         Alias::create([
             'domain' => $request->domain,
-            'site_id' => $site->id
+            'site_id' => $site->id,
         ]);
 
         // TODO - Job Create Alias (with info)
 
         return redirect('/sites/'.$site->site.'/edit/aliases')->with([
             'aliasCreated' => true,
-            'domain' => $request->domain
+            'domain' => $request->domain,
         ]);
     }
 
@@ -107,7 +107,7 @@ class AliasController extends Controller
     {
         $alias = Alias::findOrFail($id);
 
-        if(! $site != $alias->site->site) {
+        if (! $site != $alias->site->site) {
             abort(404);
         }
 
