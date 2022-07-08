@@ -9,22 +9,8 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-6 sm:px-20 bg-white">
-                <div class="py-2">
-                    <span class="h-12 w-auto">
-                        <div class="text-xl">
-                            Panel Url
-                        </div>
-                        <div class="text-3xl">
-                            <div onclick="copyInClipboard('url')" style="cursor: pointer;">
-                                <span id="url">{{ config('app.url') }}/login</span> <sup id="url-copy"><i class="text-gray-200 text-sm fa-solid fa-clone"></i>
-                            </div>
-                        </div>
-                    </span>
-                </div>
-            </div>
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                TO DO
+                TODO
             </div>
         </div>
     </div>

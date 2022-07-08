@@ -16,59 +16,45 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="p-6 sm:px-20 bg-white">
-                <div class="py-2">
-                    <span class="h-12 w-auto">
-                        <div class="text-xl">
-                            Managed Sites
-                        </div>
-                        <div class="text-3xl">
-                            <div style="cursor: pointer;">
-                                {{ \App\Models\Site::count() }}
-                            </div>
-                        </div>
-                    </span>
-                </div>
-            </div>
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 pb-8">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
-            <table id="sites" class="display" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Domain</th>
-                        <th>Aliases</th>
-                        <th>Username</th>
-                        <th>Path</th>
-                        <th>PHP</th>
-                    </tr>
-                </thead>
-            </table>
+                <table id="sites" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Domain</th>
+                            <th>Aliases</th>
+                            <th>Username</th>
+                            <th>Path</th>
+                            <th>PHP</th>
+                        </tr>
+                    </thead>
+                </table>
 
-            <script>
-            $(document).ready(function () {
-                $('#sites').DataTable({
-                    responsive: true,
-                    processing: true,
-                    serverSide: true,
-                    ajax: '/sites/index',
-                    columns: [
-                        { data: "domain" },
-                        { data: "aliases_count" },
-                        { data: "username" },
-                        { data: "path" },
-                        { data: "php" }
-                    ],
-                    columnDefs: [
-                        {
-                            'targets': 0,
-                            'render': function ( data, type, row, meta ) {
-                                return '<a href="/sites/edit/'+row["site"]+'"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
+                <script>
+                $(document).ready(function () {
+                    $('#sites').DataTable({
+                        responsive: true,
+                        processing: true,
+                        serverSide: true,
+                        ajax: '/sites/index',
+                        columns: [
+                            { data: "domain" },
+                            { data: "aliases_count" },
+                            { data: "username" },
+                            { data: "path" },
+                            { data: "php" }
+                        ],
+                        columnDefs: [
+                            {
+                                'targets': 0,
+                                'render': function ( data, type, row, meta ) {
+                                    return '<a href="/sites/edit/'+row["site"]+'"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
+                                }
                             }
-                        }
-                    ],
+                        ],
+                    });
                 });
-            });
-            </script>
+                </script>
 
             </div>
         </div>
