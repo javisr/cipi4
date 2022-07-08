@@ -86,7 +86,7 @@ class SiteController extends Controller
         return redirect('/sites/edit/'.$site->site)->with([
             'siteCreated' => true,
             'userPwd' => $userPwd,
-            'dbPwd' => $dbPwd
+            'dbPwd' => $dbPwd,
         ]);
     }
 
