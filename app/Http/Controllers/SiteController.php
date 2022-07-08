@@ -20,9 +20,6 @@ class SiteController extends Controller
                 'required',
                 'unique:sites',
             ],
-            'path' => [
-                'required',
-            ],
             'php' => [
                 'required',
                 Rule::in([
@@ -81,9 +78,16 @@ class SiteController extends Controller
             'php' => $request->php,
         ]);
 
-        // TODO - Job Create Site
+        $userPwd = Str::random(28);
+        $dbPwd = Str::random(22);
 
-        return redirect('/sites/edit/'.$site->site);
+        // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
+
+        return redirect('/sites/edit/'.$site->site)->with([
+            'siteCreated' => true,
+            'userPwd' => $userPwd,
+            'dbPwd' => $dbPwd
+        ]);
     }
 
     /**

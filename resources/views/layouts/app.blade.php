@@ -102,7 +102,8 @@
             };
 
             function isValidPath(string) {
-                if(string === '') {
+                if(string == '') {
+                    console.log('qui');
                     return true;
                 }
 
