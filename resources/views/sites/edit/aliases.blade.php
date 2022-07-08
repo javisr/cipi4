@@ -20,7 +20,7 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
-                @if (session('aliasCreated"))
+                @if (session('aliasCreated'))
                 <div class="rounded-md bg-green-50 p-4 mb-4" id="aliasCreated">
                     <div class="flex">
                         <div class="flex-shrink-0">
