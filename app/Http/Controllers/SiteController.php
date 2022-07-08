@@ -124,11 +124,18 @@ class SiteController extends Controller
      */
     public function edit($site, $section = 'settings')
     {
-        $site = Site::where('site', $site)->firstOrFail();
+        $site = Site::where('site', $site)
+                    ->with('aliases')
+                    ->firstOrFail();
 
         switch ($section) {
             case 'delete':
                 return view('sites.edit.delete', $site);
+
+                break;
+
+            case 'aliases':
+                return view('sites.edit.aliases', $site);
 
                 break;
 

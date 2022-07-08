@@ -9,6 +9,11 @@ class Alias extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'site_id',
+        'domain',
+    ];
+
     public function site()
     {
         return $this->belongsTo(Site::class);

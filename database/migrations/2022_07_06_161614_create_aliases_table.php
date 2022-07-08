@@ -14,9 +14,16 @@ return new class () extends Migration {
     {
         Schema::create('aliases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('site_id');
+            $table->bigInteger('site_id')->unsigned();
             $table->string('domain')->unique();
             $table->timestamps();
+        });
+
+        Schema::table('aliases', function (Blueprint $table) {
+            $table->foreign('site_id', 'aliases_site_id_foreign')
+                ->references('id')
+                ->on('sites')
+                ->onDelete('cascade');
         });
     }
 

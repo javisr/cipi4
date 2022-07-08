@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\AliasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/sites/{site}/edit/{section?}', [SiteController::class, 'edit']);
     Route::post('/sites/{site}/edit/{section?}', [SiteController::class, 'update']);
     Route::post('/sites/{site}/delete', [SiteController::class, 'destroy']);
+
+    Route::post('/sites/{site}/edit/aliases', [AliasController::class, 'store']);
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
