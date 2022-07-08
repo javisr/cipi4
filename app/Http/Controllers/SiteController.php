@@ -3,12 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\Alias;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
+
+    private function AliasValidation()
+    {
+        return [
+            'domain' => [
+                'required',
+                'unique:aliases',
+            ]
+        ];
+    }
+
     private function siteSettingsValidation($id = null)
     {
         if ($id) {
@@ -158,6 +170,25 @@ class SiteController extends Controller
         $site = Site::where('site', $site)->firstOrFail();
 
         switch ($section) {
+
+            case 'aliases':
+
+                $request->validate($this->aliasValidation());
+
+                Alias::create([
+                    'domain' => $request->domain,
+                    'site_id' => $site->id
+                ]);
+
+                // TODO - Job Create Alias (with info)
+
+                return redirect('/sites/'.$site->site.'/edit/aliases')->with([
+                    'aliasCreated' => true,
+                    'domain' => $request->domain
+                ]);
+
+                break;
+
 
 
             default:

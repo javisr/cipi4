@@ -14,6 +14,10 @@ class Alias extends Model
         'domain',
     ];
 
+    protected $eagerLoaded = [
+        'site'
+    ];
+
     public function site()
     {
         return $this->belongsTo(Site::class);

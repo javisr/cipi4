@@ -19,6 +19,7 @@ class Site extends Model
 
     public function aliases()
     {
-        return $this->hasMany(Alias::class);
+        return $this->hasMany(Alias::class)
+                    ->orderBy('domain');
     }
 }
