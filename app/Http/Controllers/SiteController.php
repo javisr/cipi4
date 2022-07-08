@@ -108,13 +108,8 @@ class SiteController extends Controller
         $site = Site::where('site', $site)->first();
 
         switch ($section) {
-            case 'aliases':
-                return view('sites.edit.settings', $site);
-
-                break;
-
-            case 'deployment':
-                return view('sites.edit.settings', $site);
+            case 'delete':
+                return view('sites.edit.delete', $site);
 
                 break;
 

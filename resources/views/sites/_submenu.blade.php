@@ -10,7 +10,7 @@
             <option value="/sites/edit/{{ $site }}/enviroment" @if(Request::is('*/enviroment')) selected @endif>{{ __('Environment') }}</option>
             <option value="/sites/edit/{{ $site }}/packages" @if(Request::is('*/packages')) selected @endif>{{ __('Packages') }}</option>
             <option value="/sites/edit/{{ $site }}/nginx" @if(Request::is('*/nginx')) selected @endif>{{ __('Nginx') }}</option>
-            <option value="/sites/edit/{{ $site }}/destroy" @if(Request::is('*/destroy')) selected @endif>{{ __('Destroy') }}</option>
+            <option value="/sites/edit/{{ $site }}/delete" @if(Request::is('*/delete')) selected @endif>{{ __('Delete') }}</option>
         </select>
         <script>
             $('#tabs').change(function() {
@@ -86,13 +86,13 @@
                     @endif
                 > {{ __('Nginx') }} </a>
 
-                <a href="/sites/edit/{{ $site }}/destroy"
-                    @if(Request::is('*/destroy'))
+                <a href="/sites/edit/{{ $site }}/delete"
+                    @if(Request::is('*/delete'))
                         class="border-indigo-500 text-indigo-600 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm" aria-current="page"
                     @else
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
-                > {{ __('Destroy') }} </a>
+                > {{ __('Delete') }} </a>
             </nav>
         </div>
     </div>
