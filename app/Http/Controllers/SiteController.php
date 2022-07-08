@@ -9,14 +9,13 @@ use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
-    private function siteSettingsValidation($id=null)
+    private function siteSettingsValidation($id = null)
     {
-        if($id)
-        {
+        if ($id) {
             return [
                 'domain' => [
                     'required',
-                    'unique:sites,domain,'.$id
+                    'unique:sites,domain,'.$id,
                 ],
                 'php' => [
                     'required',
@@ -43,7 +42,6 @@ class SiteController extends Controller
                 ]),
             ],
         ];
-
     }
 
     /**
@@ -148,7 +146,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site, $section='settings')
+    public function update(Request $request, $site, $section = 'settings')
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -166,12 +164,11 @@ class SiteController extends Controller
                 // TODO - Job Site Update
 
                 return redirect('/sites/edit/'.$site->site.'/settings')->with([
-                    'siteUpdated' => true
+                    'siteUpdated' => true,
                 ]);
 
                 break;
         }
-
     }
 
     /**
