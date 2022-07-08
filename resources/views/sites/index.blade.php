@@ -34,7 +34,7 @@
                 <script>
                     setTimeout(() => {
                         $("#siteDeleted").hide(500);
-                    }, 4000);
+                    }, 3500);
                 </script>
                 @endif
 
@@ -68,7 +68,7 @@
                             {
                                 'targets': 0,
                                 'render': function ( data, type, row, meta ) {
-                                    return '<a href="/sites/edit/'+row["site"]+'"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
+                                    return '<a href="/sites/'+row["site"]+'/edit"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
                                 }
                             },
                             {

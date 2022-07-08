@@ -35,7 +35,7 @@
                 <script>
                     setTimeout(() => {
                         $("#siteUpdated").hide(500);
-                    }, 4000);
+                    }, 3500);
                 </script>
                 @endif
 
@@ -98,7 +98,7 @@ DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block tex
 
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/edit/{{ $site }}/settings" id="editSite">
+                <form class="space-y-8" method="post" action="/sites/{{ $site }}/edit/settings" id="editSite">
                     @csrf
 
                     <div class="space-y-8  sm:space-y-5">

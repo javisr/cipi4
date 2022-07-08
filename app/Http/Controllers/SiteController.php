@@ -98,7 +98,7 @@ class SiteController extends Controller
 
         // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
 
-        return redirect('/sites/edit/'.$site->site)->with([
+        return redirect('/sites/'.$site->site.'/edit')->with([
             'siteCreated' => true,
             'userPwd' => $userPwd,
             'dbPwd' => $dbPwd,
@@ -163,7 +163,7 @@ class SiteController extends Controller
 
                 // TODO - Job Site Update
 
-                return redirect('/sites/edit/'.$site->site.'/settings')->with([
+                return redirect('/sites/'.$site->site.'/edit/settings')->with([
                     'siteUpdated' => true,
                 ]);
 
