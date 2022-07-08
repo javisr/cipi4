@@ -80,20 +80,24 @@
         @livewireScripts
 
         <script>
-            function copyInClipboard(element) {
+            function copyInClipboard(element,feedback=true) {
                 var tempCopyField = document.createElement("textarea");
                 document.body.appendChild(tempCopyField);
                 elementText = $('#'+element).html();
-                $('#'+element+'-copy').hide();
-                $('#'+element).html("<span style=\"color: gray;\">Copied to clipboard!<span>");
+                if(feedback) {
+                    $('#'+element+'-copy').hide();
+                    $('#'+element).html("<span style=\"color: gray;\">Copied to clipboard!<span>");
+                }
                 tempCopyField.value = elementText;
                 tempCopyField.select();
                 document.execCommand("copy");
                 document.body.removeChild(tempCopyField);
-                setTimeout(function() {
-                    $('#'+element).html(elementText);
-                    $('#'+element+'-copy').show();
-                }, 225);
+                if(feedback) {
+                    setTimeout(function() {
+                        $('#'+element).html(elementText);
+                        $('#'+element+'-copy').show();
+                    }, 225);
+                }
             }
 
             function isValidURL(string) {

@@ -79,7 +79,7 @@ class SiteController extends Controller
         ]);
 
         $userPwd = Str::random(28);
-        $dbPwd = Str::random(22);
+        $dbPwd = Str::random(20);
 
         // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
 

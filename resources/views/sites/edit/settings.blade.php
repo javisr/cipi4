@@ -20,7 +20,7 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
                 @if (session('siteCreated'))
-                <div class="rounded-md bg-green-50 p-4 mb-2">
+                <div class="rounded-md bg-green-50 p-4 mb-2" id="siteCreated">
                     <div class="flex">
                         <div class="flex-shrink-0">
                             <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -28,22 +28,42 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Site has been created!</h3>
+                            <h3 class="text-sm text-green-800 font-bold">Site has been created! </h3>
                             <div class="mt-2 text-sm text-green-700">
-                                <p><b>Root Domain:</b> {{ $domain }}</p>
-                                <p class="mb-1"><b>Web Directory:</b> /home/{{ $username }}/www{{ ($path) ? '/'.$path : '/' }}</p>
-                                <p><b>SSH Host:</b> {{ config('cipi.ssh_host') }}</p>
-                                <p><b>SSH Port:</b> {{ config('cipi.ssh_port') }}</p>
-                                <p><b>SSH Username:</b> {{ config('cipi.ssh_user') }}</p>
-                                <p class="mb-1"><b>SSH Password:</b> {{ session('userPwd') }}</p>
-                                <p><b>DB Host:</b> 127.0.0.1</p>
-                                <p><b>DB Name:</b> {{ config('cipi.db_user' )}}
-                                <p><b>DB Username:</b> {{ config('cipi.db_user') }}</p>
-                                <p><b>DB Password:</b> {{ session('dbPwd') }}</p>
+                                <div class="mb-2">
+                                    <b>SSH Connection</b>
+                                    <div onclick="copyInClipboard('sshConn')" style="cursor: pointer;">
+                                        <span id="sshConn">ssh {{ $username.'@'.config('cipi.ssh_host') }}</span> <sup id="sshConn-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <b>SSH Password</b>
+                                    <div onclick="copyInClipboard('sshPass')" style="cursor: pointer;">
+                                        <span id="sshPass">{{ session('userPwd') }}</span> <sup id="sshPass-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <b class="mt-1">File Database Configuration in .env file</b>
+                                    <div onclick="copyInClipboard('dbEnv', false)" style="cursor: pointer;">
+                                        <textarea rows="6" id="dbEnv" style="min-width: 275px" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-xs border-gray-300 rounded-md cursor-pointer">DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE={{ $username }}
+DB_USERNAME={{ $username }}
+DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block text-xs font-medium text-gray-500 cursor-pointer">Click to copy it!</label>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <b>Database Connection URL</b>
+                                    <div onclick="copyInClipboard('dbConnUrl', false)" style="cursor: pointer;">
+                                        <textarea rows="3" id="dbConnUrl" style="min-width: 275px" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-xs border-gray-300 rounded-md cursor-pointer">mysql+ssh://{{ $username.'@'.config('cipi.ssh_host') }}/{{ $username }}:{{ session('dbPwd') }}@127.0.0.1/{{ $username }}</textarea>
+                                        <label for="dbConnUrl" class="block text-xs font-medium text-gray-500 cursor-pointer">Click to copy it!</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="mt-4">
                                 <div class="-mx-2 -my-1.5 flex">
-                                    <button type="button" class="ml-3 bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">Dismiss</button>
+                                    <button id="siteCreatedDismiss" Createtype="button" class="bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">Dismiss</button>
                                 </div>
                             </div>
                         </div>
@@ -64,7 +84,7 @@
                                     <dt class="text-sm font-medium text-gray-700"> {{ __('Preview URL') }}</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                         <div onclick="copyInClipboard('preview')" style="cursor: pointer;">
-                                            <span id="preview">https://{{ crc32($username) }}-{{ Str::replace('.', '-', config('cipi.ssh_host')) }}.sslip.io</span> <sup id="preview-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i>
+                                            <span id="preview">https://{{ crc32($username) }}-{{ Str::replace('.', '-', config('cipi.ssh_host')) }}.sslip.io</span> <sup id="preview-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
                                         </div>
                                     </dd>
                                 </div>
@@ -180,6 +200,10 @@
                         if(isValidURL($('#domain').val()) && isValidPath($('#path').val())) {
                             editSite();
                         }
+                    });
+
+                    $("#siteCreatedDismiss").click(function() {
+                        $("#siteCreated").hide();
                     });
                 </script>
 
