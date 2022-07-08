@@ -41,11 +41,11 @@
                 <table id="sites" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Domain</th>
-                            <th>Aliases</th>
-                            <th>Username</th>
-                            <th>Path</th>
-                            <th>PHP</th>
+                            <th style="text-align: center">Domain</th>
+                            <th style="text-align: center">Aliases</th>
+                            <th style="text-align: center">Username</th>
+                            <th style="text-align: center">Path</th>
+                            <th style="text-align: center">PHP</th>
                         </tr>
                     </thead>
                 </table>
@@ -72,9 +72,30 @@
                                 }
                             },
                             {
+                                'targets': 1,
+                                'class': 'text-center',
+                                'render': function ( data, type, row, meta ) {
+                                    return data;
+                                }
+                            },
+                            {
+                                'targets': 2,
+                                'class': 'text-center',
+                                'render': function ( data, type, row, meta ) {
+                                    return data;
+                                }
+                            },
+                            {
                                 'targets': 3,
                                 'render': function ( data, type, row, meta ) {
                                     return '/'+data;
+                                }
+                            },
+                            {
+                                'targets': 4,
+                                'class': 'text-center',
+                                'render': function ( data, type, row, meta ) {
+                                    return data;
                                 }
                             }
                         ],
