@@ -50,6 +50,12 @@
                                 'render': function ( data, type, row, meta ) {
                                     return '<a href="/sites/edit/'+row["site"]+'"><b class="text-indigo-700">'+row["domain"]+'</b></a>';
                                 }
+                            },
+                            {
+                                'targets': 3,
+                                'render': function ( data, type, row, meta ) {
+                                    return '/'+data;
+                                }
                             }
                         ],
                     });

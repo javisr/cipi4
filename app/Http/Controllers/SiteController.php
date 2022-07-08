@@ -9,8 +9,24 @@ use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
 {
-    private function siteSettingsValidation()
+    private function siteSettingsValidation($id=null)
     {
+        if($id)
+        {
+            return [
+                'domain' => [
+                    'required',
+                    'unique:sites,domain,'.$id
+                ],
+                'php' => [
+                    'required',
+                    Rule::in([
+                        '8.1',
+                    ]),
+                ],
+            ];
+        }
+
         return [
             'username' => [
                 'required',
@@ -27,6 +43,7 @@ class SiteController extends Controller
                 ]),
             ],
         ];
+
     }
 
     /**
@@ -109,7 +126,7 @@ class SiteController extends Controller
      */
     public function edit($site, $section = 'settings')
     {
-        $site = Site::where('site', $site)->first();
+        $site = Site::where('site', $site)->firstOrFail();
 
         switch ($section) {
             case 'delete':
@@ -131,9 +148,30 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site)
+    public function update(Request $request, $site, $section='settings')
     {
-        //
+        $site = Site::where('site', $site)->firstOrFail();
+
+        switch ($section) {
+
+
+            default:
+                $request->validate($this->siteSettingsValidation($site->id));
+
+                $site->domain = $request->domain;
+                $site->path = $request->path;
+                $site->php = $request->php;
+                $site->save();
+
+                // TODO - Job Site Update
+
+                return redirect('/sites/edit/'.$site->site.'/settings')->with([
+                    'siteUpdated' => true
+                ]);
+
+                break;
+        }
+
     }
 
     /**
