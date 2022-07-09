@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Alias;
 use App\Models\Site;
-use Illuminate\Http\Request;
+use App\Models\Alias;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
