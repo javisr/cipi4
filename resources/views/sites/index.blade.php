@@ -27,7 +27,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Site {{ session('domain') }} has been delated! </h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Site ') }}{{ session('domain') }}{{ __(' has been delated!') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -41,11 +41,21 @@
                 <table id="sites" class="display" style="width:100%">
                     <thead>
                         <tr>
-                            <th style="text-align: center">Domain</th>
-                            <th style="text-align: center">Aliases</th>
-                            <th style="text-align: center">Username</th>
-                            <th style="text-align: center">Path</th>
-                            <th style="text-align: center">PHP</th>
+                            <th style="text-align: center">
+                                {{ __('Domain') }}
+                            </th>
+                            <th style="text-align: center">
+                                {{ __('Aliases') }}
+                            </th>
+                            <th style="text-align: center">
+                                {{ __('Username') }}
+                            </th>
+                            <th style="text-align: center">
+                                {{ __('Path') }}
+                            </th>
+                            <th style="text-align: center">
+                                {{ __('PHP') }}
+                            </th>
                         </tr>
                     </thead>
                 </table>

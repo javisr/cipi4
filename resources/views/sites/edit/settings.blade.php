@@ -28,7 +28,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Site settings have been updated! </h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Site settings have been updated!') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -48,42 +48,42 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Site has been created! </h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Site has been created!') }}</h3>
                             <div class="mt-2 text-sm text-green-700">
                                 <div class="mb-2">
-                                    <b>SSH Connection</b>
+                                    <b>{{ __('SSH Connection') }}</b>
                                     <div onclick="copyInClipboard('sshConn')" style="cursor: pointer;">
                                         <span id="sshConn">ssh {{ $username.'@'.config('cipi.ssh_host') }}</span> <sup id="sshConn-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <b>SSH Password</b>
+                                    <b>{{ __('SSH Password') }}</b>
                                     <div onclick="copyInClipboard('sshPass')" style="cursor: pointer;">
                                         <span id="sshPass">{{ session('userPwd') }}</span> <sup id="sshPass-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <b class="mt-1">File Database Configuration in .env file</b>
+                                    <b class="mt-1">{{ __('File Database Configuration in .env file') }}</b>
                                     <div onclick="copyInClipboard('dbEnv', false)" style="cursor: pointer;">
                                         <textarea rows="6" id="dbEnv" style="min-width: 275px" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-xs border-gray-300 rounded-md cursor-pointer">DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE={{ $username }}
 DB_USERNAME={{ $username }}
-DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block text-xs font-medium text-gray-500 cursor-pointer">Click to copy it!</label>
+DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block text-xs font-medium text-gray-500 cursor-pointer">{{ __('Click to copy it!') }}</label>
                                     </div>
                                 </div>
                                 <div class="mb-2">
-                                    <b>Database Connection URL</b>
+                                    <b>{{ __('Database Connection URL') }}</b>
                                     <div onclick="copyInClipboard('dbConnUrl', false)" style="cursor: pointer;">
                                         <textarea rows="3" id="dbConnUrl" style="min-width: 275px" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full text-xs border-gray-300 rounded-md cursor-pointer">mysql+ssh://{{ $username.'@'.config('cipi.ssh_host') }}/{{ $username }}:{{ session('dbPwd') }}@127.0.0.1/{{ $username }}</textarea>
-                                        <label for="dbConnUrl" class="block text-xs font-medium text-gray-500 cursor-pointer">Click to copy it!</label>
+                                        <label for="dbConnUrl" class="block text-xs font-medium text-gray-500 cursor-pointer">{{ __('Click to copy it!') }}</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mt-4">
                                 <div class="-mx-2 -my-1.5 flex">
-                                    <button id="siteCreatedDismiss" Createtype="button" class="bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">Dismiss</button>
+                                    <button id="siteCreatedDismiss" Createtype="button" class="bg-green-50 px-2 py-1.5 rounded-md text-sm font-medium text-green-800 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">{{ __('Dismiss') }}</button>
                                 </div>
                             </div>
                         </div>

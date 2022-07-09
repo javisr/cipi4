@@ -29,7 +29,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Alias {{ session('domain') }} has been created! </h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Alias ') }}{{ session('domain') }}{{ __(' has been created!') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">Alias {{ session('domain') }} has been delated! </h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Alias ') }}{{ session('domain') }}{{ (' has been delated!') }}</h3>
                         </div>
                     </div>
                 </div>

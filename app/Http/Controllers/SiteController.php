@@ -145,6 +145,11 @@ class SiteController extends Controller
 
                 break;
 
+            case 'ssl':
+                return view('sites.edit.ssl', $site);
+
+                break;
+
             case 'aliases':
                 return view('sites.edit.aliases', $site);
 

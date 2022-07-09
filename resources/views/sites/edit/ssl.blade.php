@@ -18,9 +18,29 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
+                @if (session('sslGenerated'))
+                <div class="rounded-md bg-green-50 p-4 mb-2" id="sslGenerated">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('A request') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    setTimeout(() => {
+                        $("#sslGenerated").hide(500);
+                    }, 3500);
+                </script>
+                @endif
+
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/delete" id="deleteSite">
+                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/ssl" id="sslSite">
                     @csrf
 
                     <div class="max-w-sm mx-auto pb-4 px-4 sm:px-0">
@@ -30,37 +50,25 @@
                                     <div class="relative focus-within:ring-2 focus-within:ring-indigo-500">
                                         <h3 class="text-md font-semibold text-gray-900">
                                             <span class="absolute inset-0" aria-hidden="true"></span>
-                                                {{ __('Are you sure to delete this site and all its aliases?') }}
+                                                {{ __('Do you want generate free LetsEncrypt Certificates for your site and its aliases?') }}
                                         </h3>
-                                        <p class="mt-1 text-sm text-gray-600 line-clamp-2">{{ __('Please type the root domain of this site ') }}(<b>{{ $domain }}</b>){{ __(' to confirm its deletion from server:') }}</p>
+                                        <p class="mt-1 text-sm text-gray-600 line-clamp-2">{{ __('Before to proceed, be sure that DNS configurations of the domains and subdomains (root domain and all its aliases) correctly point to this server.') }}</p>
                                     </div>
                                 </li>
                             </ul>
-                        </div>
-
-                        <div class="mt-2">
-                            <div>
-                                <input type="text" name="delete" id="delete" autocomplete="OFF" autofocus class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                            </div>
                         </div>
 
                     </div>
 
                     <div class="pt-1 pb-5">
                         <div class="flex justify-center">
-                            <button type="submit" id="deleteSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 cursor-pointer">
-                                {{ __('Delete') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="editSiteLoading"></i>
+                            <button type="submit" id="sslSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer">
+                                {{ __('Require Certificates') }}
                             </button>
                         </div>
                     </div>
 
                 </form>
-
-                <script>
-                    $('#deleteSite').submit(function() {
-                        return ($('#delete').val() == '{{ $domain }}')
-                    });
-                </script>
 
             </div>
         </div>
