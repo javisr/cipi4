@@ -37,6 +37,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('/sites/{site}/edit/security/database', [SiteController::class, 'database']);
     Route::post('/sites/{site}/edit/aliases/{id}', [AliasController::class, 'destroy']);
 
+    Route::any('/sites/{site}/deploy/{pin}', [DeployController::class, 'run']);
+
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
     Route::get('/ajax/getdeploykey/{username}', [AjaxController::class, 'getDeployKey']);

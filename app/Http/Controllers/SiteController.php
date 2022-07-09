@@ -215,6 +215,20 @@ class SiteController extends Controller
                 break;
 
 
+            case 'deploy':
+                $site->repo = $request->repo;
+                $site->branch = $request->branch;
+                $site->deploy = $request->deploy;
+                $site->save();
+
+                // TODO - Job Site Update
+
+                return redirect('/sites/'.$site->site.'/edit/deploy')->with([
+                    'deployUpdated' => true,
+                ]);
+
+                break;
+
 
             default:
                 $request->validate($this->siteSettingsValidation($site->id));

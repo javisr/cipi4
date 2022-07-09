@@ -19,9 +19,31 @@
 
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-8 py-8">
 
+
+                @if (session('deployUpdated'))
+                <div class="rounded-md bg-green-50 p-4 mb-2" id="deployUpdated">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('Site deploy configuration has been updated!') }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    setTimeout(() => {
+                        $("#deployUpdated").hide(500);
+                    }, 3500);
+                </script>
+                @endif
+
+
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/{{ $site }}/edit/deploy" id="editSite">
+                <form class="space-y-8" method="post" action="/sites/{{ $site }}/edit/deploy" id="deploySite">
                     @csrf
 
                     <div class="space-y-8  sm:space-y-5">
@@ -63,20 +85,21 @@
                             <label for="deploy" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Deploy Script') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                                 <div class="max-w-lg flex rounded-md shadow-sm">
-                                    <div id="deploy" name="deploy" class="rounded-md" style="width: 100%; height: 220px;">git pull
-npm run dev
-composer install
-php artisan migrate --force</div>
+                                    <div id="deploy" name="deploy" class="rounded-md" style="width: 100%; height: 220px;">{{ $deploy }}</div>
                                 <script>
                                     var editor = ace.edit("deploy");
                                     editor.setTheme("ace/theme/monokai");
-                                    editor.session.setMode("ace/mode/sh");
+                                    editor.getSession().setMode("ace/mode/sh");
+                                    editor.getSession().on('change', function() {
+                                        $('#deployField').val(editor.getSession().getValue());
+                                    });
                                 </script>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    <input type="hidden" name="deploy" id="deployField">
 
 
 
@@ -93,34 +116,14 @@ php artisan migrate --force</div>
 
                     <div class="pt-5">
                         <div class="flex justify-end">
-                            <span id="editSiteSubmit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{ __('Update') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="editSiteLoading"></i>
-                            </span>
+                            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                                {{ __('Update') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="deploySiteLoading"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
 
                 <script>
-                    function editSite() {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/ajax/checkuniquedomain/'+$('#domain').val()+'/{{ $site }}',
-                            beforeSend: function() {
-                                $('#domainError').hide();
-                                $('#editSiteLoading').show();
-                            },
-                            success: function(data) {
-                                $('#editSite').submit();
-                            },
-                            error: function(xhr) {
-                                $('#domainErrorMessagge').html('{{ __("The domain has already been taken on this server.") }}');
-                                $('#domainError').show();
-                                $('#editSiteLoading').hide();
-                            }
-                        });
-                    }
-
-
                     $.ajax({
                         type: 'GET',
                         url: '/ajax/getdeploykey/{{ $username }}',
@@ -132,11 +135,6 @@ php artisan migrate --force</div>
                             $('#key').empty();
                             $('#key').html(data);
                         }
-                    });
-
-
-                    $("#editSiteSubmit").click(function(event) {
-                        editSite();
                     });
                 </script>
 
