@@ -204,7 +204,7 @@ class SiteController extends Controller
                 // TODO - Job SSL creation
 
                 return redirect('/sites/'.$site->site.'/edit/ssl')->with([
-                    'sslGenerated' => true
+                    'sslGenerated' => true,
                 ]);
 
                 break;
