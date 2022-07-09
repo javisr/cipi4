@@ -165,6 +165,16 @@ class SiteController extends Controller
 
                 break;
 
+            case 'enviroment':
+                return view('sites.edit.enviroment', $site);
+
+                break;
+
+            case 'packages':
+                return view('sites.edit.packages', $site);
+
+                break;
+
             case 'nginx':
                 return view('sites.edit.nginx', $site);
 
