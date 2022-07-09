@@ -55,7 +55,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($site, $section = 'settings', $id)
+    public function edit($site, $section, $id)
     {
         //
     }
@@ -67,7 +67,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site, $section = 'settings', $id)
+    public function update(Request $request, $site, $section, $id)
     {
         //
     }

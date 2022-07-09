@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Site;
 use App\Models\Alias;
+use App\Models\Site;
 use phpseclib3\Net\SSH2;
 
 class AjaxController extends Controller
@@ -43,7 +43,6 @@ class AjaxController extends Controller
         ]);
     }
 
-
     public function checkServerStatus()
     {
         try {
@@ -68,7 +67,6 @@ class AjaxController extends Controller
             'hdd' => $status[2],
         ]);
     }
-
 
     public function getDeployKey($username)
     {

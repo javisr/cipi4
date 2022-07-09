@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Site;
 use App\Models\Alias;
-use Illuminate\Support\Str;
+use App\Models\Site;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class SiteController extends Controller
@@ -203,7 +203,6 @@ class SiteController extends Controller
 
                 break;
 
-
             case 'ssl':
 
                 // TODO - Job SSL creation
@@ -213,7 +212,6 @@ class SiteController extends Controller
                 ]);
 
                 break;
-
 
             case 'deploy':
                 $site->repo = $request->repo;
@@ -228,7 +226,6 @@ class SiteController extends Controller
                 ]);
 
                 break;
-
 
             default:
                 $request->validate($this->siteSettingsValidation($site->id));
