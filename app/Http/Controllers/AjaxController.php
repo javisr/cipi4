@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Site;
 use App\Models\Alias;
+use App\Models\Site;
 use phpseclib3\Net\SSH2;
 
 class AjaxController extends Controller
