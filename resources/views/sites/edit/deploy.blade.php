@@ -120,49 +120,23 @@ php artisan migrate --force</div>
                         });
                     }
 
-                    function getKey() {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/ajax/getdeploykey/{{ $username }}',
-                            success: function(data) {
-                                $('#key').empty();
-                                $('#key').html(data);
-                            },
-                            error: function(xhr) {
-                                $('#key').empty();
-                                $('#key').html(data);
-                            }
-                        });
-                    }
-                    getKey();
 
-                    $('#domain').on('input', function() {
-                        if(isValidURL($('#domain').val())) {
-                            $('#domainError').hide();
-                        } else {
-                            $('#domainErrorMessagge').html('{{ __("Wrong domain name.") }}');
-                            $('#domainError').show();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/ajax/getdeploykey/{{ $username }}',
+                        success: function(data) {
+                            $('#key').empty();
+                            $('#key').html(data);
+                        },
+                        error: function(xhr) {
+                            $('#key').empty();
+                            $('#key').html(data);
                         }
                     });
 
-                    $('#path').on('input', function() {
-                        if(isValidPath($('#path').val())) {
-                            $('#pathError').hide();
-                        } else {
-                            $('#pathErrorMessagge').html('{{ __("Wrong directory.") }}');
-                            $('#pathError').show();
-                        }
-                    });
 
                     $("#editSiteSubmit").click(function(event) {
-                        if(!$('#domain').val()) {
-                            $('#domainErrorMessagge').html('{{ __("The site domain is required.") }}');
-                            $('#domainError').show();
-                        }
-
-                        if(isValidURL($('#domain').val()) && isValidPath($('#path').val())) {
-                            editSite();
-                        }
+                        editSite();
                     });
                 </script>
 
