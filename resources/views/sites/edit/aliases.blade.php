@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
             <div class="ml-4 mt-2">
-                <h3 class="py-2 text-2xl leading-6 font-medium text-gray-900 font-black">{{ __('Edit Site') }}</h3>
+                <h3 class="py-2 text-2xl leading-6 font-medium text-gray-900 font-black">{{ __('Edit') }} {{ $domain }}</h3>
             </div>
             <div class="ml-4 mt-2 flex-shrink-0">
                 <a href="/sites">
