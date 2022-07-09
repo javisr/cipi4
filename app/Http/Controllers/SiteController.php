@@ -150,6 +150,11 @@ class SiteController extends Controller
 
                 break;
 
+            case 'deploy':
+                return view('sites.edit.deploy', $site);
+
+                break;
+
             case 'aliases':
                 return view('sites.edit.aliases', $site);
 
@@ -189,6 +194,17 @@ class SiteController extends Controller
                 return redirect('/sites/'.$site->site.'/edit/aliases')->with([
                     'aliasCreated' => true,
                     'domain' => $request->domain,
+                ]);
+
+                break;
+
+
+            case 'ssl':
+
+                // TODO - Job SSL creation
+
+                return redirect('/sites/'.$site->site.'/edit/ssl')->with([
+                    'sslGenerated' => true
                 ]);
 
                 break;

@@ -27,7 +27,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm text-green-800 font-bold">{{ __('A request') }}</h3>
+                            <h3 class="text-sm text-green-800 font-bold">{{ __('SSL certificates will be generated in the next minutes.') }}</h3>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
 
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/ssl" id="sslSite">
+                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/edit/ssl" id="sslSite">
                     @csrf
 
                     <div class="max-w-sm mx-auto pb-4 px-4 sm:px-0">
