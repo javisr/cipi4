@@ -30,9 +30,7 @@ class SiteController extends Controller
                 ],
                 'php' => [
                     'required',
-                    Rule::in([
-                        '8.1',
-                    ]),
+                    Rule::in(config('cipi.php_versions')),
                 ],
             ];
         }
@@ -108,6 +106,8 @@ class SiteController extends Controller
         $dbPwd = Str::random(16);
 
         // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
+        // NB: Intercetta se è basata su Laravel e precompila:
+        // .env e jobs (+ forza cartella a public)
 
         return redirect('/sites/'.$site->site.'/edit')->with([
             'siteCreated' => true,

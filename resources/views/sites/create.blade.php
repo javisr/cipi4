@@ -26,6 +26,17 @@
 
                     <div class="space-y-8  sm:space-y-5">
 
+                        <div class="mt-5 border-b border-gray-200">
+                            <dl>
+                                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-700"> {{ __('Is it based on Laravel?') }}</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                        <input type="checkbox" value="yes" name="laravel" class="rounded-md mr-1" checked> Yes, it is!
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
                             <label for="domain" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Root Domain') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
@@ -72,7 +83,9 @@
                             <label for="php" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('PHP Version') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <select id="php" name="php" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                                <option value="8.1">PHP 8.1</option>
+                                @foreach (config('cipi.php_versions') as $phpVers)
+                                    <option value="{{ $phpVers }}">{{ $phpVers }}</option>
+                                @endforeach
                             </select>
                             </div>
                         </div>
