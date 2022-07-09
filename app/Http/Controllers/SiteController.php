@@ -104,8 +104,8 @@ class SiteController extends Controller
             'php' => $request->php,
         ]);
 
-        $userPwd = Str::random(28);
-        $dbPwd = Str::random(20);
+        $userPwd = Str::random(20);
+        $dbPwd = Str::random(16);
 
         // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
 
@@ -274,7 +274,7 @@ class SiteController extends Controller
     {
         $site = Site::where('site', $site)->firstOrFail();
 
-        $userPwd = Str::random(28);
+        $userPwd = Str::random(20);
 
         // TODO - Job Password Change
 
@@ -288,7 +288,7 @@ class SiteController extends Controller
     {
         $site = Site::where('site', $site)->firstOrFail();
 
-        $dbPwd = Str::random(20);
+        $dbPwd = Str::random(16);
 
         // TODO - Job Database Pwd Change
 
