@@ -29,7 +29,7 @@
                         <div class="mt-5 border-b border-gray-200">
                             <dl>
                                 <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-700"> {{ __('Deploy Hook') }}</dt>
+                                    <dt class="text-sm font-medium text-gray-700"> {{ __('Deploy Webhook') }}</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                         <div onclick="copyInClipboard('preview')" style="cursor: pointer;">
                                             <span id="preview">https://cipi-{{ Str::replace('.', '-', config('cipi.ssh_host')) }}.sslip.io/sites/{{ $site }}/deploy/{{ crc32('app.key'.$site) }}</span> <sup id="preview-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
@@ -44,7 +44,7 @@
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                                 <div class="max-w-lg flex rounded-md shadow-sm">
                                     <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"><i class="fa-brands fa-github mr-2"></i> github.com/</span>
-                                    <input type="text" name="repo" id="repo" autocomplete="OFF" placeholder="gituser/gitrepo" value="{{ $repo }}" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                    <input type="text" name="repo" id="repo" autocomplete="OFF" placeholder="username/project" value="{{ $repo }}" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                                 </div>
                             </div>
                         </div>
@@ -52,10 +52,43 @@
                         <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                             <label for="branch" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Branch') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
-                            --
+                                <div class="max-w-lg flex rounded-md shadow-sm">
+                                    <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"><i class="fa-solid fa-code-branch"></i></span>
+                                    <input type="text" name="branch" id="branch" autocomplete="OFF" placeholder="develop" value="{{ $branch }}" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
+                                </div>
                             </div>
                         </div>
 
+                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label for="deploy" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Deploy Script') }} </label>
+                            <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                <div class="max-w-lg flex rounded-md shadow-sm">
+                                    <div id="deploy" name="deploy" class="rounded-md" style="width: 100%; height: 220px;">git pull
+npm run dev
+composer install
+php artisan migrate --force</div>
+                                <script>
+                                    var editor = ace.edit("deploy");
+                                    editor.setTheme("ace/theme/monokai");
+                                    editor.session.setMode("ace/mode/sh");
+                                </script>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                        <label for="key" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Deploy Key') }} </label>
+                        <div class="mt-1 sm:mt-0 sm:col-span-2">
+                            <div class="max-w-lg flex rounded-md">
+                                <div onclick="copyInClipboard('key', false)" style="cursor: pointer;">
+                                    <span id="key" name="key" class="rounded-md" style="width: 100%; height: 220px; font-size: 8px;"><i class="fas fa-spinner fa-spin ml-2" style="font-size: 18px" id="keyLoading"></i></span></span> <span id="key-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="pt-5">
@@ -86,6 +119,22 @@
                             }
                         });
                     }
+
+                    function getKey() {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/ajax/getdeploykey/{{ $username }}',
+                            success: function(data) {
+                                $('#key').empty();
+                                $('#key').html(data);
+                            },
+                            error: function(xhr) {
+                                $('#key').empty();
+                                $('#key').html(data);
+                            }
+                        });
+                    }
+                    getKey();
 
                     $('#domain').on('input', function() {
                         if(isValidURL($('#domain').val())) {

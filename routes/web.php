@@ -37,4 +37,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);
+    Route::get('/ajax/getdeploykey/{username}', [AjaxController::class, 'getDeployKey']);
 });

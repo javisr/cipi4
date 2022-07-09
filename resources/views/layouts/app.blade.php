@@ -17,6 +17,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/responsive/2.2.6/js/dataTables.responsive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.7.1/ace.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.7.1/theme-monokai.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.7.1/mode-nginx.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.7.1/mode-sh.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.7.1/mode-json.min.js"></script>
 
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <script src="{{ mix('js/app.js') }}" defer></script>

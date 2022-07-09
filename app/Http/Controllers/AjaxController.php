@@ -43,6 +43,7 @@ class AjaxController extends Controller
         ]);
     }
 
+
     public function checkServerStatus()
     {
         try {
@@ -66,5 +67,21 @@ class AjaxController extends Controller
             'ram' => $status[1],
             'hdd' => $status[2],
         ]);
+    }
+
+
+    public function getDeployKey($username)
+    {
+        try {
+            $ssh = new SSH2(config('cipi.ssh_host'), config('cipi.ssh_port'));
+            $ssh->login(config('cipi.ssh_user'), config('cipi.ssh_pass'));
+            $ssh->setTimeout(360);
+            $key = $ssh->exec('cat /home/'.$username.'/rsa/public.key');
+            $ssh->exec('exit');
+        } catch (\Throwable $th) {
+            return 'Something went wrong!';
+        }
+
+        return $key;
     }
 }

@@ -167,6 +167,20 @@ DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block tex
                             </div>
                         </div>
 
+                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label for="actions" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Actions') }} </label>
+                            <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                <span id="editSiteSubmit" class="mr-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer">
+                                    {{ __('Reset SSH Password') }}
+                                </span>
+                                <span id="editSiteSubmit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer">
+                                    {{ __('Reset Database Password') }}
+                                </span>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
                     <div class="pt-5">
