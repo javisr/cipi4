@@ -87,14 +87,14 @@
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                                 <div class="max-w-lg flex rounded-md shadow-sm">
                                     <div id="deploy" name="deploy" class="rounded-md" style="width: 100%; height: 220px;">{{ $deploy }}</div>
-                                <script>
-                                    var editor = ace.edit("deploy");
-                                    editor.setTheme("ace/theme/monokai");
-                                    editor.getSession().setMode("ace/mode/sh");
-                                    editor.getSession().on('change', function() {
-                                        $('#deployField').val(editor.getSession().getValue());
-                                    });
-                                </script>
+                                    <script>
+                                        var editor = ace.edit("deploy");
+                                        editor.setTheme("ace/theme/monokai");
+                                        editor.getSession().setMode("ace/mode/sh");
+                                        editor.getSession().on('change', function() {
+                                            $('#deployField').val(editor.getSession().getValue());
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>

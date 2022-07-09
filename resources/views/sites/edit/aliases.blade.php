@@ -145,7 +145,7 @@
                             },
                             error: function(xhr) {
                                 $('#domainErrorMessagge').html(
-                                    '{{ __('The domain has already been taken on this server.') }}');
+                                    '{{ __("The domain has already been taken on this server.") }}');
                                 $('#domainError').show();
                                 $('#editSiteLoading').hide();
                             }

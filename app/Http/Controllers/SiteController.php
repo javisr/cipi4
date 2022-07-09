@@ -165,6 +165,11 @@ class SiteController extends Controller
 
                 break;
 
+            case 'nginx':
+                return view('sites.edit.nginx', $site);
+
+                break;
+
             case 'aliases':
                 return view('sites.edit.aliases', $site);
 
@@ -231,6 +236,21 @@ class SiteController extends Controller
                 ]);
 
                 break;
+
+            case 'nginx':
+
+                // TODO - Attenzione... prima di salvare bisogna fare nginx -t e vedere se ci sono errori.
+                // Si torna poi o con errore o con success!
+
+                // $site->nginx = $request->nginx;
+                // $site->save();
+
+                // Ritorna o Updated o nginxError!!!
+                // return redirect('/sites/'.$site->site.'/edit/nginx')->with([
+                //     'nginxUpdated' => true,
+                // ]);
+
+            break;
 
             case 'queue':
                 $site->supervisord = $request->supervisord;
