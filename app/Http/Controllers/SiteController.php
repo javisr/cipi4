@@ -150,6 +150,11 @@ class SiteController extends Controller
 
                 break;
 
+            case 'queue':
+                return view('sites.edit.queue', $site);
+
+                break;
+
             case 'ssl':
                 return view('sites.edit.ssl', $site);
 
@@ -223,6 +228,18 @@ class SiteController extends Controller
 
                 return redirect('/sites/'.$site->site.'/edit/deploy')->with([
                     'deployUpdated' => true,
+                ]);
+
+                break;
+
+            case 'queue':
+                $site->supervisord = $request->supervisord;
+                $site->save();
+
+                // TODO - Job Queue Update
+
+                return redirect('/sites/'.$site->site.'/edit/queue')->with([
+                    'queueUpdated' => true,
                 ]);
 
                 break;

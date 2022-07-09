@@ -45,6 +45,7 @@
 
                 <form class="space-y-8" method="post" action="/sites/{{ $site }}/edit/deploy" id="deploySite">
                     @csrf
+                    <input type="hidden" name="deploy" id="deployField">
 
                     <div class="space-y-8  sm:space-y-5">
 
@@ -98,29 +99,28 @@
                             </div>
                         </div>
 
-                    </div>
-                    <input type="hidden" name="deploy" id="deployField">
 
-
-
-                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                        <label for="key" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Deploy Key') }} </label>
-                        <div class="mt-1 sm:mt-0 sm:col-span-2">
-                            <div class="max-w-lg flex rounded-md">
-                                <div onclick="copyInClipboard('key', false)" style="cursor: pointer;">
-                                    <span id="key" name="key" class="rounded-md" style="width: 100%; height: 220px; font-size: 8px;"><i class="fas fa-spinner fa-spin ml-2" style="font-size: 18px" id="keyLoading"></i></span></span> <span id="key-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
+                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                            <label for="key" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Deploy Key') }} </label>
+                            <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                <div class="max-w-lg flex rounded-md">
+                                    <div onclick="copyInClipboard('key', false)" style="cursor: pointer;">
+                                        <span id="key" name="key" class="rounded-md" style="width: 100%; height: 220px; font-size: 8px;"><i class="fas fa-spinner fa-spin ml-2" style="font-size: 18px" id="keyLoading"></i></span></span> <span id="key-copy"><i class="text-gray-200 text-xs fa-solid fa-clone"></i></sup>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="pt-5">
+                            <div class="flex justify-end">
+                                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                                    {{ __('Update') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="deploySiteLoading"></i>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class="pt-5">
-                        <div class="flex justify-end">
-                            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
-                                {{ __('Update') }} <i class="fas fa-spinner fa-spin ml-2 hidden" id="deploySiteLoading"></i>
-                            </button>
-                        </div>
-                    </div>
                 </form>
 
                 <script>
