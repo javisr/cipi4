@@ -40,7 +40,7 @@
 
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/edit/ssl" id="sslSite">
+                <form class="space-y-8" method="post" action="/sites/{{ $site }}/edit/ssl" id="sslSite">
                     @csrf
 
                     <div class="max-w-sm mx-auto pb-4 px-4 sm:px-0">

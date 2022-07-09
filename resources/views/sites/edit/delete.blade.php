@@ -20,7 +20,7 @@
 
                 @include('sites._submenu')
 
-                <form class="space-y-8" method="post" action="/sites/{{ request()->site }}/delete" id="deleteSite">
+                <form class="space-y-8" method="post" action="/sites/{{ $site }}/delete" id="deleteSite">
                     @csrf
 
                     <div class="max-w-sm mx-auto pb-4 px-4 sm:px-0">

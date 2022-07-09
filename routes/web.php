@@ -33,6 +33,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('/sites/{site}/edit/{section?}', [SiteController::class, 'update']);
     Route::post('/sites/{site}/delete', [SiteController::class, 'destroy']);
 
+    Route::post('/sites/{site}/edit/security/password', [SiteController::class, 'password']);
+    Route::post('/sites/{site}/edit/security/database', [SiteController::class, 'database']);
     Route::post('/sites/{site}/edit/aliases/{id}', [AliasController::class, 'destroy']);
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);

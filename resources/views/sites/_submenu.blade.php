@@ -10,6 +10,7 @@
             <option value="/sites/{{ $site }}/edit/enviroment" @if(Request::is('*/enviroment')) selected @endif>{{ __('Environment') }}</option>
             <option value="/sites/{{ $site }}/edit/packages" @if(Request::is('*/packages')) selected @endif>{{ __('Packages') }}</option>
             <option value="/sites/{{ $site }}/edit/nginx" @if(Request::is('*/nginx')) selected @endif>{{ __('Nginx') }}</option>
+            <option value="/sites/{{ $site }}/edit/security" @if(Request::is('*/security')) selected @endif>{{ __('Security') }}</option>
             <option value="/sites/{{ $site }}/edit/delete" @if(Request::is('*/delete')) selected @endif>{{ __('Delete') }}</option>
         </select>
         <script>
@@ -85,6 +86,14 @@
                         class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
                     @endif
                 > {{ __('Nginx') }} </a>
+
+                <a href="/sites/{{ $site }}/edit/security"
+                    @if(Request::is('*/security'))
+                        class="border-indigo-500 text-indigo-600 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm" aria-current="page"
+                    @else
+                        class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 w-1/4 py-4 px-1 text-center border-b-2 font-medium text-sm"
+                    @endif
+                > {{ __('Security') }} </a>
 
                 <a href="/sites/{{ $site }}/edit/delete"
                     @if(Request::is('*/delete'))

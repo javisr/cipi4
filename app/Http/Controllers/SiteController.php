@@ -145,6 +145,11 @@ class SiteController extends Controller
 
                 break;
 
+            case 'security':
+                return view('sites.edit.security', $site);
+
+                break;
+
             case 'ssl':
                 return view('sites.edit.ssl', $site);
 
@@ -248,6 +253,34 @@ class SiteController extends Controller
         return redirect('/sites')->with([
             'siteDeleted' => true,
             'domain' => $domain,
+        ]);
+    }
+
+    public function password($site)
+    {
+        $site = Site::where('site', $site)->firstOrFail();
+
+        $userPwd = Str::random(28);
+
+        // TODO - Job Password Change
+
+        return redirect('/sites/'.$site->site.'/edit/security')->with([
+            'passwordChanged' => true,
+            'password' => $userPwd,
+        ]);
+    }
+
+    public function database($site)
+    {
+        $site = Site::where('site', $site)->firstOrFail();
+
+        $dbPwd = Str::random(20);
+
+        // TODO - Job Database Pwd Change
+
+        return redirect('/sites/'.$site->site.'/edit/security')->with([
+            'databaseChanged' => true,
+            'password' => $dbPwd,
         ]);
     }
 }
