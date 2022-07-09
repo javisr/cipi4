@@ -247,16 +247,26 @@ class SiteController extends Controller
 
                 break;
 
-            case 'deploy':
-                $site->repo = $request->repo;
-                $site->branch = $request->branch;
-                $site->deploy = $request->deploy;
+            case 'packages':
+                $site->packages = $request->packages;
                 $site->save();
 
                 // TODO - Job Site Update
 
-                return redirect('/sites/'.$site->site.'/edit/deploy')->with([
-                    'deployUpdated' => true,
+                return redirect('/sites/'.$site->site.'/edit/packages')->with([
+                    'packagesUpdated' => true,
+                ]);
+
+                break;
+
+            case 'enviroment':
+                $site->enviroment = $request->enviroment;
+                $site->save();
+
+                // TODO - Job Site Update
+
+                return redirect('/sites/'.$site->site.'/edit/enviroment')->with([
+                    'enviromentUpdated' => true,
                 ]);
 
                 break;
@@ -266,12 +276,15 @@ class SiteController extends Controller
                 // TODO - Attenzione... prima di salvare bisogna fare nginx -t e vedere se ci sono errori.
                 // Si torna poi o con errore o con success!
 
-                // $site->nginx = $request->nginx;
-                // $site->save();
+                $site->nginx = $request->nginx;
+                $site->save();
 
                 // Ritorna o Updated o nginxError!!!
+                return redirect('/sites/'.$site->site.'/edit/nginx')->with([
+                    'nginxUpdated' => true,
+                ]);
                 // return redirect('/sites/'.$site->site.'/edit/nginx')->with([
-                //     'nginxUpdated' => true,
+                //     'nginxError' => true,
                 // ]);
 
             break;

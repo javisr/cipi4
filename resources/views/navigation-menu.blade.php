@@ -18,8 +18,11 @@
                     <x-jet-nav-link href="{{ route('sites') }}" :active="request()->routeIs('sites')">
                         {{ __('Sites') }}
                     </x-jet-nav-link>
-                    <x-jet-nav-link href="{{ route('settings') }}" :active="request()->routeIs('settings')">
-                        {{ __('Settings') }}
+                    <x-jet-nav-link href="{{ route('crontab') }}" :active="request()->routeIs('crontab')">
+                        {{ __('Crontab') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
+                        {{ __('Services') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -149,8 +152,11 @@
             <x-jet-responsive-nav-link href="{{ route('sites') }}" :active="request()->routeIs('sites')">
                 {{ __('Sites') }}
             </x-jet-responsive-nav-link>
-            <x-jet-responsive-nav-link href="{{ route('settings') }}" :active="request()->routeIs('settings')">
-                {{ __('Settings') }}
+            <x-jet-responsive-nav-link href="{{ route('crontab') }}" :active="request()->routeIs('crontab')">
+                {{ __('Crontab') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('services') }}" :active="request()->routeIs('services')">
+                {{ __('Services') }}
             </x-jet-responsive-nav-link>
         </div>
 

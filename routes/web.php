@@ -24,7 +24,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/sites', 'sites.index')->name('sites');
     Route::view('/sites/create', 'sites.create');
-    Route::view('/settings', 'settings')->name('settings');
+    Route::view('/crontab', 'crontab')->name('crontab');
+    Route::view('/services', 'services')->name('services');
 
     Route::get('/sites/index', [SiteController::class, 'index']);
     Route::get('/sites/create', [SiteController::class, 'create']);
