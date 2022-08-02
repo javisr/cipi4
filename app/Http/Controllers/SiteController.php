@@ -287,7 +287,7 @@ class SiteController extends Controller
                 //     'nginxError' => true,
                 // ]);
 
-            break;
+                break;
 
             case 'queue':
                 $site->supervisord = $request->supervisord;
