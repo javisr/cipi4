@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
-use App\Http\Controllers\SiteController;
 use App\Http\Controllers\AliasController;
+use App\Http\Controllers\SiteController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
