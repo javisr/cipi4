@@ -140,7 +140,7 @@ DB_PASSWORD={{ session('dbPwd') }}</textarea><label for="dbEnv" class="block tex
                             <label for="path" class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"> {{ __('Web Directory') }} </label>
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <div class="max-w-lg flex rounded-md shadow-sm">
-                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> /home/{{ $username }}/www </span>
+                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm"> /home/{{ $username }}/www/ </span>
                                 <input type="text" name="path" id="path" autocomplete="OFF" value="{{ $path }}" class="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300">
                             </div>
                             </div>
