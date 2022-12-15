@@ -18,7 +18,7 @@ return new class () extends Migration {
             $table->string('username')->unique();
             $table->string('domain')->unique();
             $table->string('path')->nullable();
-            $table->string('php')->defualt('8.1');
+            $table->string('php')->defualt('8.2');
             $table->string('repo')->nullable();
             $table->string('branch')->nullable();
             $table->text('deploy')->nullable();

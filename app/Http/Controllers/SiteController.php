@@ -46,9 +46,7 @@ class SiteController extends Controller
             ],
             'php' => [
                 'required',
-                Rule::in([
-                    '8.1',
-                ]),
+                Rule::in(config('cipi.php_versions')),
             ],
         ];
     }
