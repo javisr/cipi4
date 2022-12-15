@@ -13,6 +13,7 @@ return [
     'username_prefix' => env('CIPI_USERNAME_PREFIX', 'cp'),
 
     'php_versions' => [
+        '8.2',
         '8.1',
     ],
 
