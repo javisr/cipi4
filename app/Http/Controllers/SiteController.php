@@ -204,7 +204,6 @@ class SiteController extends Controller
         $site = Site::where('site', $site)->firstOrFail();
 
         switch ($section) {
-
             case 'aliases':
 
                 $request->validate($this->aliasValidation());
