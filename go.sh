@@ -259,6 +259,38 @@ sleep 1s
 
 sudo DEBIAN_FRONTEND=noninteractive add-apt-repository -y ppa:ondrej/php
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-fpm
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-common
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-curl
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-bcmath
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-mbstring
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-tokenizer
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-mysql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-sqlite3
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-pgsql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-redis
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-memcached
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-json
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-zip
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-xml
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-soap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-gd
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-imagick
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-fileinfo
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-imap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-cli
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.2-openssl
+PHPINI=/etc/php/8.2/fpm/conf.d/cipi.ini
+sudo touch $PHPINI
+sudo cat > "$PHPINI" <<EOF
+memory_limit = 256M
+upload_max_filesize = 256M
+post_max_size = 256M
+max_execution_time = 180
+max_input_time = 180
+EOF
+sudo service php8.2-fpm restart
+
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-fpm
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-common
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.1-curl
@@ -292,7 +324,6 @@ EOF
 sudo service php8.1-fpm restart
 
 
-
 # PHP CLI
 clear
 echo "${bggreen}${black}${bold}"
@@ -300,7 +331,7 @@ echo "PHP CLI configuration..."
 echo "${reset}"
 sleep 1s
 
-sudo update-alternatives --set php /usr/bin/php8.1
+sudo update-alternatives --set php /usr/bin/php8.2
 
 
 
@@ -378,7 +409,7 @@ server {
     error_page 404 /index.php;
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
     }
     location ~ /\.(?!well-known).* {
         deny all;
@@ -422,7 +453,7 @@ server {
     error_page 404 /index.php;
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
     }
     location ~ /\.(?!well-known).* {
         deny all;
