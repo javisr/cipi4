@@ -28,6 +28,7 @@ class SiteController extends Controller
                 'domain' => [
                     'required',
                     'unique:sites,domain,'.$id,
+                    'unique:aliases',
                 ],
                 'php' => [
                     'required',
@@ -44,6 +45,7 @@ class SiteController extends Controller
             'domain' => [
                 'required',
                 'unique:sites',
+                'unique:aliases',
             ],
             'php' => [
                 'required',
