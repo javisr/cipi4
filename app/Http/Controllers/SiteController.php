@@ -16,7 +16,7 @@ class SiteController extends Controller
             'domain' => [
                 'required',
                 'unique:aliases',
-                'unique:domains',
+                'unique:sites',
             ],
         ];
     }
