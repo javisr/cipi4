@@ -324,6 +324,40 @@ EOF
 sudo service php8.1-fpm restart
 
 
+
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-fpm
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-common
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-curl
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-bcmath
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-mbstring
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-tokenizer
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-mysql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-sqlite3
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-pgsql
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-redis
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-memcached
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-json
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-zip
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-xml
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-soap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-gd
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-imagick
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-fileinfo
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-imap
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-cli
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install php8.0-openssl
+PHPINI=/etc/php/8.0/fpm/conf.d/cipi.ini
+sudo touch $PHPINI
+sudo cat > "$PHPINI" <<EOF
+memory_limit = 256M
+upload_max_filesize = 256M
+post_max_size = 256M
+max_execution_time = 180
+max_input_time = 180
+EOF
+sudo service php8.0-fpm restart
+
+
 # PHP CLI
 clear
 echo "${bggreen}${black}${bold}"
