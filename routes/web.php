@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::any('/sites/{site}/deploy/{pin}', [DeployController::class, 'run']);
+
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/sites', 'sites.index')->name('sites');
@@ -37,8 +39,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::post('/sites/{site}/edit/security/password', [SiteController::class, 'password']);
     Route::post('/sites/{site}/edit/security/database', [SiteController::class, 'database']);
     Route::post('/sites/{site}/edit/aliases/{id}', [AliasController::class, 'destroy']);
-
-    Route::any('/sites/{site}/deploy/{pin}', [DeployController::class, 'run']);
 
     Route::get('/ajax/checkserverstatus', [AjaxController::class, 'checkServerStatus']);
     Route::get('/ajax/checkuniquedomain/{domain}/{site?}', [AjaxController::class, 'checkUniqueDomain']);

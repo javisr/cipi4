@@ -73,7 +73,7 @@
                             <div class="mt-1 sm:mt-0 sm:col-span-2">
                             <select id="php" name="php" class="max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
                                 @foreach (config('cipi.php_versions') as $phpVers)
-                                    <option value="{{ $phpVers }}" @if(config('cipi.php_default') == $phpVers) selected @endif>{{ $phpVers }}</option>
+                                    <option value="{{ $phpVers }}" @if(config('cipi.php_default_version') == $phpVers) selected @endif>{{ $phpVers }}</option>
                                 @endforeach
                             </select>
                             </div>
