@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 class DeployController extends Controller
 {
-    public function run($site)
+    public function run($site, $pin)
     {
-        //TODO
+        // TODO
     }
 }
