@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use App\Models\Alias;
 use phpseclib3\Net\SSH2;
+use Illuminate\Http\JsonResponse;
 
 class AjaxController extends Controller
 {
-    public function checkUniqueDomain($domain, $site = null)
+    public function checkUniqueDomain($domain, $site = null): JsonResponse
     {
         if ($site &&
             (
@@ -43,7 +44,7 @@ class AjaxController extends Controller
         ]);
     }
 
-    public function checkServerStatus()
+    public function checkServerStatus(): JsonResponse
     {
         try {
             $ssh = new SSH2(config('cipi.ssh_host'), config('cipi.ssh_port'));

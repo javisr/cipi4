@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use App\Models\Alias;
 use phpseclib3\Net\SSH2;
+use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 
 class SiteController extends Controller
 {
@@ -76,10 +78,8 @@ class SiteController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('sites.create', [
             'username' => config('cipi.username_prefix').uniqid(),
@@ -88,11 +88,8 @@ class SiteController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate($this->siteSettingsValidation());
 
@@ -141,9 +138,8 @@ class SiteController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($site, $section = 'settings')
+    public function edit($site, $section = 'settings'): View
     {
         $site = Site::where('site', $site)
                     ->with('aliases')
@@ -205,11 +201,9 @@ class SiteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site, $section = 'settings')
+    public function update(Request $request, $site, $section = 'settings'): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -332,9 +326,8 @@ class SiteController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($site)
+    public function destroy($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -350,7 +343,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function password($site)
+    public function password($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -364,7 +357,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function database($site)
+    public function database($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
