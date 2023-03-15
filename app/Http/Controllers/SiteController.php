@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Site;
 use App\Models\Alias;
+use phpseclib3\Net\SSH2;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -105,6 +106,16 @@ class SiteController extends Controller
 
         $userPwd = Str::random(20);
         $dbPwd = Str::random(16);
+
+        $ssh = new SSH2(config('cipi.ssh_host'), 22);
+        $ssh->login(config('cipi.ssh_user'), config('cipi.ssh_pass'));
+        $ssh->setTimeout(360);
+        $ssh->exec('echo '.config('cipi.ssh_pass').' | sudo -S sudo unlink newsite');
+        $ssh->exec('echo '.config('cipi.ssh_pass').' | sudo -S sudo wget '.config('app.url').'/sh/newsite');
+        $ssh->exec('echo '.config('cipi.ssh_pass').' | sudo -S sudo dos2unix newsite');
+        $ssh->exec('echo '.config('cipi.ssh_pass').' | sudo -S sudo bash newsite -dbr '.$this->server->database.' -u '.$this->site->username.' -p '.$this->site->password.' -dbp '.$this->site->database.' -php '.$this->site->php.' -id '.$this->site->site_id.' -r '.config('app.url').' -b '.$this->site->basepath);
+        $ssh->exec('echo '.config('cipi.ssh_pass').' | sudo -S sudo unlink newsite');
+        $ssh->exec('exit');
 
         // TODO - Job Create Site (with $site, $userPwd, $dbPwd)
 
