@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SiteCreation;
 use App\Models\Site;
 use App\Models\Alias;
 use Illuminate\View\View;
+use App\Jobs\SiteCreation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
