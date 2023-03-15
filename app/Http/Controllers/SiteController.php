@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Site;
 use App\Models\Alias;
 use phpseclib3\Net\SSH2;
@@ -79,7 +81,7 @@ class SiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         return view('sites.create', [
             'username' => config('cipi.username_prefix').uniqid(),
@@ -92,7 +94,7 @@ class SiteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate($this->siteSettingsValidation());
 
@@ -143,7 +145,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($site, $section = 'settings')
+    public function edit($site, $section = 'settings'): View
     {
         $site = Site::where('site', $site)
                     ->with('aliases')
@@ -209,7 +211,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site, $section = 'settings')
+    public function update(Request $request, $site, $section = 'settings'): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -334,7 +336,7 @@ class SiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($site)
+    public function destroy($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -350,7 +352,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function password($site)
+    public function password($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 
@@ -364,7 +366,7 @@ class SiteController extends Controller
         ]);
     }
 
-    public function database($site)
+    public function database($site): RedirectResponse
     {
         $site = Site::where('site', $site)->firstOrFail();
 

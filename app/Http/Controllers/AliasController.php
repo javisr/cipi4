@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use App\Models\Alias;
 use Illuminate\Http\Request;
 
@@ -44,7 +45,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($site, $id)
+    public function show($site, int $id)
     {
         //
     }
@@ -55,7 +56,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($site, $section, $id)
+    public function edit($site, $section, int $id)
     {
         //
     }
@@ -67,7 +68,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $site, $section, $id)
+    public function update(Request $request, $site, $section, int $id)
     {
         //
     }
@@ -78,7 +79,7 @@ class AliasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($site, $id)
+    public function destroy($site, int $id): RedirectResponse
     {
         $alias = Alias::findOrFail($id);
 

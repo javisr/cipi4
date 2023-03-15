@@ -15,7 +15,7 @@ class LogoutResponse implements LogoutResponseContract
      * @param  Request  $request
      * @return Response
      */
-    public function toResponse($request)
+    public function toResponse(Request $request): Response
     {
         return $request->wantsJson()
             ? new JsonResponse('', 204)
