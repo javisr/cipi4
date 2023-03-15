@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use App\Models\Site;
 use App\Models\Alias;
 use phpseclib3\Net\SSH2;
+use Illuminate\Http\JsonResponse;
 
 class AjaxController extends Controller
 {
